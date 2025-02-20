@@ -1,0 +1,10 @@
+<script>
+ function handleToggle(details) {
+     const container = details.querySelector('.ttyd-container');
+     if (details.open) {
+         container.innerHTML = '<iframe src="http://10.11.100.35/ttyd" style="width: 100%; height: 500px; border: none;"></iframe>';
+     } else {
+         container.innerHTML = '';
+     }
+ }
+ </script>

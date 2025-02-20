@@ -1,0 +1,13 @@
+[Unit]
+Description=TTyd Web Terminal
+After=network.target
+
+[Service]
+#ExecStart=/bin/bash -c "/usr/local/bin/ttyd -W /home/debian/.cargo/bin/aichat --rag pc-rag-all --role airole-front-desk"
+ExecStart=/bin/bash -c "/usr/local/bin/ttyd -W /home/debian/pc-work-instruction/ai-launcher.sh"
+Restart=always
+User=debian
+Group=debian
+
+[Install]
+WantedBy=multi-user.target

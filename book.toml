@@ -1,0 +1,15 @@
+[book]
+authors = []
+language = "en"
+multilingual = false
+#note: keep in sync with .gitignore
+src = "src-work-instructions"
+
+[build]
+#note: keep in sync with .gitignore
+build-dir = "wi"
+
+[output.html]
+#NOTE: the below assumes your primary branch is 'main' and not 'master'
+git-repository-url = "https://github.com/your-project/your-repo/src-book/tree/master"
+edit-url-template = "https://github.com/your-project/your-repo/edit/main/{path}"
