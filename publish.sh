@@ -93,9 +93,9 @@ echo WS_NGINX_DIR=$WS_NGINX_DIR
 #cp $WI_SRC_DIR/util/config.yaml ~/.config/aichat/.
 #cd ~/.config/aichat/roles/
 #ln -s $WI_SRC_DIR/$AI_ROLE_STARTER $AI_ROLE_STARTER
-##TODO: manually add claude and openai keys to ~/.config/aichat/config.yaml
-##TODO: run `aichat` and send a test message to confirm all works as expected
-##TODO: run `aichat --role $AI_ROLE_STARTER` and send a test message to confirm the role works as expected
+#echo manually add claude and openai keys to ~/.config/aichat/config.yaml
+#echo run `aichat` and send a test message to confirm all works as expected
+#echo run `aichat --role $AI_ROLE_STARTER` and send a test message to confirm the role works as expected
 #### end aichat install ####
 
 #### create RAG ####
