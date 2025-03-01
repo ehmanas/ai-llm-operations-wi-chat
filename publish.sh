@@ -2,15 +2,17 @@
 
 ##NOTE: DO NOT EXPOSE THIS SERVER TO THE INTERNET!!! IT SHOULD BE HELD BEHIND A FIREWALL AND ONLY EXPOSED TO TRUSTED RESOURCES.
 ##NOTE: this script assumes debain 12 or ubuntu 24.04
-##NOTE: this would normally be deployed in a nixos environment; however, this script is more accessible to most Linux users
-##NOTE: this script has two parts: top part helps configure a server, and bottom part is the script that runs evert time you publish.
+##NOTE: this would normally be deployed in a nixos environment; however, creating a generic script is more accessible to most Linux users
+##NOTE: this script has two parts: 
+##		top part helps configure a server
+##		bottom part is the script that runs evert time you publish
 ##NOTE: the top part is not really a script. It is designed to guide you. You can uncomment a section at a time to review and execute.
 
 ##TODO: ensure running from user with sudo priviledges - assumes this is your primary user
 ##TODO: create a url for this server and update theme/head.hbs accordingly
 ##TODO: add https cert in nginx
-##TODO: need openai and claude api tokens (open ai for embedding/rag and claude for general questions)
-##TODO: script depends on local user (rags, services, etc...) - if the user does not exist, simply create it with sudo capabilities
+##TODO: need openai and claude api tokens for aichat (open ai for embedding/rag and claude for general questions)
+##TODO: script depends on a local user (rags, services, etc...) - if the desired user does not exist, simply create it with sudo capabilities
 ##TODO: update the below variables labeled with ###change-me###
 
 
