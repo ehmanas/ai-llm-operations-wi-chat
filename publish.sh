@@ -48,16 +48,16 @@ echo WI_DIR=$WI_DIR
 GH_URL="https://github.com"
 echo GH_URL=$GH_URL
 # git project
-GH_PROJECT="ai-llm-operations-wi-chat" ###change-me###
+GH_PROJECT="chuckstack" ###change-me###
 echo GH_PROJECT=$GH_PROJECT
 # git repo
-GH_REPO="chuckstack" ###change-me###
+GH_REPO="ai-llm-operations-wi-chat" ###change-me###
 echo GH_REPO=$GH_REPO
 # work instruction url
 WI_URL=$GH_URL/$GH_PROJECT/$GH_REPO
 echo WI_URL=$WI_URL
 # work instruction source full path
-WI_SRC_DIR=$WI_DIR/$GH_REPO/$GH_REPO
+WI_SRC_DIR=$WI_DIR/$GH_PROJECT/$GH_REPO
 echo WI_SRC_DIR=$WI_SRC_DIR
 # AI role that tells your LLM how to answer questions
 AI_ROLE_STARTER=airole-starter.md
@@ -66,7 +66,7 @@ echo AI_ROLE_STARTER=$AI_ROLE_STARTER
 AI_RAG_ALL=wi-rag-all
 echo AI_RAG_ALL=$AI_RAG_ALL
 # nginx website dir
-WS_NGINX_DIR=wi-website
+WS_NGINX_DIR=$GH_PROJECT-$GH_REPO
 echo WS_NGINX_DIR=$WS_NGINX_DIR
 #exit
 #### end variables used by all parts of script ####
