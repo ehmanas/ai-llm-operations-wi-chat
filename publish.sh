@@ -41,6 +41,8 @@ echo OS_USER=$OS_USER
 # Current Group
 OS_USER_GROUP=$(id -g -n)
 echo OS_USER_GROUP=$OS_USER_GROUP
+# chat user
+CHAT_USER="cathy" ###change-me###
 # Where to install docs
 WI_DIR=/opt/work-instruction
 echo WI_DIR=$WI_DIR
@@ -80,6 +82,10 @@ echo WS_NGINX_DIR=$WS_NGINX_DIR
 #export LANGUAGE=en_US
 #export LC_ALL=en_US.UTF-8
 #### end ensure proper Locale ####
+
+#### create local chat user ####
+#adduser --disabled-password --gecos "" $CHAT_USER
+#### end create local chat user ####
 
 ##NOTE: this might already be installed
 #### install config system inside local user ####
