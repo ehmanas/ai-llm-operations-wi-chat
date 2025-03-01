@@ -15,6 +15,15 @@
 ##TODO: script depends on a local user (rags, services, etc...) - if the desired user does not exist, simply create it with sudo capabilities
 ##TODO: update the below variables labeled with ###change-me###
 
+#### Repository Notes ####
+# The script assumes there are multiple repositories (or at least accounts for this scenario)
+# each repository:
+#	is a book or collection of knowledge (has src directory)
+#	has its own book.toml
+#		we can put [chuckstack] variables in the book.toml without conflict
+#	can have multiple aichat airole files/ttyd (csr, mgr, etc...)
+#### end Repository Notes ####
+
 
 #### Variables used by all parts of script ####
 # fully qualified script path and name
@@ -32,7 +41,6 @@ echo OS_USER=$OS_USER
 # Current Group
 OS_USER_GROUP=$(id -g -n)
 echo OS_USER_GROUP=$OS_USER_GROUP
-
 # Where to install docs
 WI_DIR=/opt/work-instruction
 echo WI_DIR=$WI_DIR
@@ -46,13 +54,10 @@ echo GH_PROJECT=$GH_PROJECT
 GH_REPO="chuckstack" ###change-me###
 echo GH_REPO=$GH_REPO
 # work instruction url
-WI_URL=$GH_URL/$GH_PROJECT/$GH_REPO/
+WI_URL=$GH_URL/$GH_PROJECT/$GH_REPO
 echo WI_URL=$WI_URL
-# work instruction source - where Obsidian saves markdown work instructions
-WI_SRC=src-work-instructions ###sync with book.toml, .gitignore if changed###
-echo WI_SRC=$WI_SRC
 # work instruction source full path
-WI_SRC_DIR=$WI_DIR/$GH_REPO/$WI_SRC
+WI_SRC_DIR=$WI_DIR/$GH_REPO/$GH_REPO
 echo WI_SRC_DIR=$WI_SRC_DIR
 # AI role that tells your LLM how to answer questions
 AI_ROLE_STARTER=airole-starter.md
@@ -63,7 +68,6 @@ echo AI_RAG_ALL=$AI_RAG_ALL
 # nginx website dir
 WS_NGINX_DIR=wi-website
 echo WS_NGINX_DIR=$WS_NGINX_DIR
-
 #exit
 #### end variables used by all parts of script ####
 
@@ -77,6 +81,7 @@ echo WS_NGINX_DIR=$WS_NGINX_DIR
 #export LC_ALL=en_US.UTF-8
 #### end ensure proper Locale ####
 
+##NOTE: this might already be installed
 #### install config system inside local user ####
 ##note: installs aichat, mdbook and other things needed to admin a machine for the current user - we install this on all machines - review if needed
 #cd ~
