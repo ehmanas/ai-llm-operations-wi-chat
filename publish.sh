@@ -24,6 +24,17 @@
 #	can have multiple aichat airole files/ttyd (csr, mgr, etc...)
 #### end Repository Notes ####
 
+function graceful_exit
+{
+      echo -e "Exiting due to an error occuring at $(TZ=US/Eastern date '+%m/%d/%Y %H:%M:%S EST.')\n" | tee -a $LOG_FILE
+      echo -e "Some results before the error may have been logged to $LOG_FILE\n"
+      echo -e "Here is the error message: $1\n"
+      exit 1
+}
+
+#validations
+echo HERE validations
+sudo ls &>/dev/null || graceful_exit "current user does not have sudo abilities"
 
 #### Variables used by all parts of script ####
 # fully qualified script path and name
@@ -84,7 +95,7 @@ echo WS_NGINX_DIR=$WS_NGINX_DIR
 #### end ensure proper Locale ####
 
 #### create local chat user ####
-#adduser --disabled-password --gecos "" $CHAT_USER
+#sudo adduser --disabled-password --gecos "" $CHAT_USER
 #### end create local chat user ####
 
 ##NOTE: this might already be installed
