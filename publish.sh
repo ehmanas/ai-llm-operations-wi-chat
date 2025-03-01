@@ -186,55 +186,55 @@ echo WS_NGINX_DIR=$WS_NGINX_DIR
 
 ######## END PART ONE: Configuration ##########
 
-######## START PART TWO: PUBLISH ##########
-##NOTE: the following is uncommented and added to a cron for periodic execution
-
-PUBLISH_DATE=`date +%Y%m%d`-`date +%H%M%S`
-echo "**********************"
-echo "***starting publish***"
-echo "**********************"
-echo PUBLISH_DATE = $PUBLISH_DATE
-cd ~/pc-work-instruction/
-cd pc-work-instruction && ./summary.sh && cd ..
-git add .
-git commit -m 'publisher commit summary'
-git pull --rebase
-/home/ubuntu/.cargo/bin/mdbook build
-sudo rsync -a --delete book/ /var/www/procare-ws/
-sudo chown -R www-data:www-data /var/www/procare-ws/
-sudo rm -rf /var/www/procare-ws/.obsidian/
-#sudo systemctl restart ttyd
-#sudo systemctl restart nginx
-
-# Create or clear the output file - prepare to cat all individual chat result directories
-OUTPUT_FILE=~/.config/aichat/messages.md
-> "$OUTPUT_FILE"
-
-# Find all individual messages.md files and cat them into the output file
-find ~/.aichat-history/ -name "messages.md" -type f -exec cat {} >> "$OUTPUT_FILE" \;
-
-# evaluate combined messages
-/home/ubuntu/.cargo/bin/aichat --no-stream -f pc-work-instruction/airole-message-review.md -f $OUTPUT_FILE
-
-# rebuild the rag with current files
-rm -rf ~/pc-work-instruction/rag-stage/*
-cp ~/pc-work-instruction/pc-work-instruction/*.md ~/pc-work-instruction/rag-stage/.
-rm ~/pc-work-instruction/rag-stage/SUMMARY.md
-/home/ubuntu/.cargo/bin/aichat --rag pc-rag-all --rebuild-rag
-
-# move messages to chat history
-mv $OUTPUT_FILE ./pc-work-instruction/prompt-history/messages-$PUBLISH_DATE.md
-
-# git it
-git add .
-git commit -m 'publisher commit prompt history'
-git pull --rebase
-git push
-
-# cleanup history
-rm -rf /home/ubuntu/.aichat-history/*
-
-echo "***ending publish***"
-
-#### deploy aichat through ttyd
-#ttyd -a -W aichat --session --rag pc-wi --role pc-role-fd
+######### START PART TWO: PUBLISH ##########
+###NOTE: the following is uncommented and added to a cron for periodic execution
+#
+#PUBLISH_DATE=`date +%Y%m%d`-`date +%H%M%S`
+#echo "**********************"
+#echo "***starting publish***"
+#echo "**********************"
+#echo PUBLISH_DATE = $PUBLISH_DATE
+#cd ~/pc-work-instruction/
+#cd pc-work-instruction && ./summary.sh && cd ..
+#git add .
+#git commit -m 'publisher commit summary'
+#git pull --rebase
+#/home/ubuntu/.cargo/bin/mdbook build
+#sudo rsync -a --delete book/ /var/www/procare-ws/
+#sudo chown -R www-data:www-data /var/www/procare-ws/
+#sudo rm -rf /var/www/procare-ws/.obsidian/
+##sudo systemctl restart ttyd
+##sudo systemctl restart nginx
+#
+## Create or clear the output file - prepare to cat all individual chat result directories
+#OUTPUT_FILE=~/.config/aichat/messages.md
+#> "$OUTPUT_FILE"
+#
+## Find all individual messages.md files and cat them into the output file
+#find ~/.aichat-history/ -name "messages.md" -type f -exec cat {} >> "$OUTPUT_FILE" \;
+#
+## evaluate combined messages
+#/home/ubuntu/.cargo/bin/aichat --no-stream -f pc-work-instruction/airole-message-review.md -f $OUTPUT_FILE
+#
+## rebuild the rag with current files
+#rm -rf ~/pc-work-instruction/rag-stage/*
+#cp ~/pc-work-instruction/pc-work-instruction/*.md ~/pc-work-instruction/rag-stage/.
+#rm ~/pc-work-instruction/rag-stage/SUMMARY.md
+#/home/ubuntu/.cargo/bin/aichat --rag pc-rag-all --rebuild-rag
+#
+## move messages to chat history
+#mv $OUTPUT_FILE ./pc-work-instruction/prompt-history/messages-$PUBLISH_DATE.md
+#
+## git it
+#git add .
+#git commit -m 'publisher commit prompt history'
+#git pull --rebase
+#git push
+#
+## cleanup history
+#rm -rf /home/ubuntu/.aichat-history/*
+#
+#echo "***ending publish***"
+#
+##### deploy aichat through ttyd
+##ttyd -a -W aichat --session --rag pc-wi --role pc-role-fd
