@@ -17,26 +17,25 @@
 
 
 #### Variables used by all parts of script ####
-SC_SCRIPTNAME=$(readlink -f "$0")
-echo SC_SCRIPTNAME=$SC_SCRIPTNAME
-SC_SCRIPTPATH=$(dirname "$SC_SCRIPTNAME")
-echo SC_SCRIPTPATH=$SC_SCRIPTPATH
-SC_BASENAME=$(basename "$0")
-echo SC_BASENAME=$SC_BASENAME
-SC_OSUSER=$(id -u -n)
-echo SC_OSUSER=$SC_OSUSER
-SC_OSUSER_GROUP=$(id -g -n)
-echo SC_OSUSER_GROUP=$SC_OSUSER_GROUP
-
-# Where to install docs
-WI_DIR=/opt/work-instruction
-echo WI_DIR=$WI_DIR
+# fully qualified script path and name
+SC_SCRIPT_DIR_NAME=$(readlink -f "$0")
+echo SC_SCRIPT_DIR_NAME=$SC_SCRIPT_DIR_NAME
+# fully qualified script path
+SC_SCRIPT_DIR=$(dirname "$SC_SCRIPT_DIR_NAME")
+echo SC_SCRIPT_DIR=$SC_SCRIPT_DIR
+# name of script
+SC_SCRIPT_NAME=$(basename "$0")
+echo SC_SCRIPT_NAME=$SC_SCRIPT_NAME
 # Current User
 OS_USER=$(id -u -n)
 echo OS_USER=$OS_USER
 # Current Group
 OS_USER_GROUP=$(id -g -n)
 echo OS_USER_GROUP=$OS_USER_GROUP
+
+# Where to install docs
+WI_DIR=/opt/work-instruction
+echo WI_DIR=$WI_DIR
 # git URL
 GH_URL="https://github.com"
 echo GH_URL=$GH_URL
