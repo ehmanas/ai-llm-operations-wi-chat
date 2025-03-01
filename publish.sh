@@ -30,10 +30,10 @@ echo OS_USER_GROUP=$OS_USER_GROUP
 GH_URL="https://github.com"
 echo GH_URL=$GH_URL
 # git project
-GH_PROJECT="your-project" ###change-me###
+GH_PROJECT="ai-llm-operations-wi-chat" ###change-me###
 echo GH_PROJECT=$GH_PROJECT
 # git repo
-GH_REPO="your-repo" ###change-me###
+GH_REPO="chuckstack" ###change-me###
 echo GH_REPO=$GH_REPO
 # work instruction url
 WI_URL=$GH_URL/$GH_PROJECT/$GH_REPO/
@@ -77,6 +77,7 @@ echo WS_NGINX_DIR=$WS_NGINX_DIR
 #./init.sh
 #### end config system ####
 
+##NOTE: this secton needs to be deleted
 #### create book repo artifacts ####
 #sudo mkdir -p $WI_DIR
 #sudo chown $OS_USER:$OS_USER_GROUP $WI_DIR
