@@ -6,7 +6,7 @@
 ##NOTE: this script has two parts: 
 ##		top part helps configure a server
 ##		bottom part is the script that runs evert time you publish
-##NOTE: the top part is not really a script. It is designed to guide you. You can uncomment a section at a time to review and execute.
+##NOTE: the top part is not really a script. It is designed to guide you. You can uncomment a section at a time to review and execute to configure your system.
 
 ##TODO: ensure running from user with sudo priviledges - assumes this is your primary user
 ##TODO: create a url for this server and update theme/head.hbs accordingly
@@ -17,6 +17,17 @@
 
 
 #### Variables used by all parts of script ####
+SC_SCRIPTNAME=$(readlink -f "$0")
+echo SC_SCRIPTNAME=$SC_SCRIPTNAME
+SC_SCRIPTPATH=$(dirname "$SC_SCRIPTNAME")
+echo SC_SCRIPTPATH=$SC_SCRIPTPATH
+SC_BASENAME=$(basename "$0")
+echo SC_BASENAME=$SC_BASENAME
+SC_OSUSER=$(id -u -n)
+echo SC_OSUSER=$SC_OSUSER
+SC_OSUSER_GROUP=$(id -g -n)
+echo SC_OSUSER_GROUP=$SC_OSUSER_GROUP
+
 # Where to install docs
 WI_DIR=/opt/work-instruction
 echo WI_DIR=$WI_DIR
