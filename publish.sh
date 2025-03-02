@@ -102,8 +102,10 @@ SC_VARIABLES[WS_NGINX_DIR]=$WS_NGINX_DIR
 TTYD_PORT=7681
 echo TTYD_PORT=$TTYD_PORT
 
+echo
+echo property variables:
 for key in "${!SC_VARIABLES[@]}"; do
-    echo "$key ${SC_VARIABLES[$key]}"
+    echo "$key=\"${SC_VARIABLES[$key]}\""
 done
 
 #exit
