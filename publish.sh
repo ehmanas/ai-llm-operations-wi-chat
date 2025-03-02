@@ -125,7 +125,7 @@ done
 ##NOTE: this secton needs to be deleted
 #### create book repo artifacts ####
 #sudo mkdir -p $WI_ROOT_DIR
-#sudo chown $OS_USER:$OS_USER_GROUP $WI_ROOT_DIR
+#sudo chown -R $OS_USER:$OS_USER_GROUP $WI_ROOT_DIR
 #cd $WI_ROOT_DIR
 #git config --global credential.helper 'cache --timeout 7200000' #Note - better to use ssh key
 #git clone $WI_URL # this is your obsidian repository
