@@ -72,6 +72,9 @@ echo WI_URL=$WI_URL
 # work instruction source full path
 WI_SRC_DIR=$WI_DIR/$GH_PROJECT/$GH_REPO
 echo WI_SRC_DIR=$WI_SRC_DIR
+# where the markdown files are located
+WI_SRC=$WI_SRC_DIR/"src-work-instructions"
+echo WI_SRC=$WI_SRC
 # AI role that tells your LLM how to answer questions
 AI_ROLE_STARTER=airole-starter.md
 echo AI_ROLE_STARTER=$AI_ROLE_STARTER
@@ -120,17 +123,16 @@ echo WS_NGINX_DIR=$WS_NGINX_DIR
 #### end create book repo artifacts ####
 
 #### create /opt repositories
-sudo mkdir $WI_DIR/$GH_PROJECT/
-sudo cp -r $SC_SCRIPT_DIR/ $WI_DIR/$GH_PROJECT/
-
+#sudo mkdir -p $WI_DIR/$GH_PROJECT/
+#sudo cp -r $SC_SCRIPT_DIR/ $WI_DIR/$GH_PROJECT/
 #### end create /opt repositories
 
 #### start aichat configure ####
-#cd ~
-#mkdir -p /home/$CHAT_USER/.config/aichat/roles/
-#cp $WI_SRC_DIR/util/config.yaml /home/$CHAT_USER/.config/aichat/.
-#cd ~/.config/aichat/roles/
-#ln -s $WI_SRC_DIR/$AI_ROLE_STARTER $AI_ROLE_STARTER
+#cd $SC_SCRIPT_DIR
+#sudo mkdir -p /home/$CHAT_USER/.config/aichat/roles/
+#sudo cp util/config.yaml /home/$CHAT_USER/.config/aichat/.
+#cd /home/$CHAT_USER/.config/aichat/roles/
+#sudo ln -s $WI_SRC_DIR/$WI_SRC/$AI_ROLE_STARTER $AI_ROLE_STARTER
 #echo manually add claude and openai keys to ~/.config/aichat/config.yaml
 #echo run `aichat` and send a test message to confirm all works as expected
 #echo run `aichat --role $AI_ROLE_STARTER` and send a test message to confirm the role works as expected
