@@ -169,8 +169,6 @@ done
 #### create RAG ####
 ## create a directory where we can ensure only the files we want ingested are present
 #$WI_REPO_DIR/util/stage.sh
-##sudo mkdir -p $WI_REPO_DIR/rag-stage
-##sudo cp $WI_SRC_DIR/*.md $WI_REPO_DIR/rag-stage/
 #### end create RAG ####
 
 ##Here are the steps to build a local rag:
