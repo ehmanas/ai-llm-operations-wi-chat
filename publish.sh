@@ -151,18 +151,22 @@ echo WS_NGINX_DIR=$WS_NGINX_DIR
 ##note: `>` represents being in the aichat repl
 ##note: variables are not auto completed - they are just there to show you what should be added. example $AI_RAG_ALL could be 'wi-rag-all'
 ##```bash
-#echo AI_RAG_ALL=$AI_RAG_ALL
-#echo rag directory = $WI_REPO_DIR/rag-stage/\*\*/\*.md
-#aichat
-#> .rag $AI_RAG_ALL
-#> large embedding (default)
-#> 2000 chunk (default)
-#> 100 overlap (default)
-#> $WI_REPO_DIR/rag-stage/\*\*/\*.md
+#echo
+#echo
+#echo "### execute the following manually ###"
+#echo
+#echo
+#echo sudo -u $CHAT_USER aichat
+#echo "> .rag $AI_RAG_ALL"
+#echo "> large embedding (default)"
+#echo "> 2000 chunk (default)"
+#echo "> 100 overlap (default)"
+#echo "> $WI_REPO_DIR/rag-stage/**/*.md"
 ##```
 ##TODO: run `aichat --role $AI_ROLE_STARTER --rag $AI_RAG_ALL` and send a test message to confirm the role and rag work together as expected
 #### end create RAG ####
 
+#HERE
 #### start ttyd installation ####
 #cd /tmp/
 #sudo apt-get update
