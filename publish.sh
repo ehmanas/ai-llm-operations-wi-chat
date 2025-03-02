@@ -243,7 +243,7 @@ echo
 #sudo mv $WI_REPO_DIR/util/$WS_SERVICE_NAME /etc/nginx/sites-available/$WS_SERVICE_NAME
 #echo cat /etc/nginx/sites-available/$WS_SERVICE_NAME
 #sudo ln -s /etc/nginx/sites-available/$WS_SERVICE_NAME /etc/nginx/sites-enabled/
-#sudo rm /etc/nginx/sites-enabled/default
+#sudo rm -f /etc/nginx/sites-enabled/default
 #sudo systemctl restart nginx
 #### end config of nginx ####
 
@@ -262,7 +262,7 @@ echo
 #echo "***starting publish***"
 #echo "**********************"
 #echo PUBLISH_DATE = $PUBLISH_DATE
-#cd ~/pc-work-instruction/
+#cd $WI_REPO_DIR/
 #cd pc-work-instruction && ./summary.sh && cd ..
 #git add .
 #git commit -m 'publisher commit summary'
