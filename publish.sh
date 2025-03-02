@@ -268,7 +268,7 @@ echo
 ##git add .
 ##git commit -m 'publisher commit summary'
 ##git pull --rebase
-#/usr/local/bin/mdbook build
+#sudo /usr/local/bin/mdbook build
 #sudo rsync -a --delete book/ /var/www/$WS_SERVICE_NAME/
 #sudo chown -R www-data:www-data /var/www/$WS_SERVICE_NAME/
 #sudo rm -rf /var/www/procare-ws/.obsidian/
