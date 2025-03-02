@@ -98,13 +98,20 @@ echo AI_ROLE_STARTER_MD=$AI_ROLE_STARTER_MD
 # AI RAG Name for where all documents are maintained
 AI_RAG_ALL=wi-rag-all
 echo AI_RAG_ALL=$AI_RAG_ALL
-# nginx website dir ant ttyd service name
+# nginx website dir service name
 WS_SERVICE_NAME=$GH_REPO-$AI_ROLE_STARTER
 echo WS_SERVICE_NAME=$WS_SERVICE_NAME
+SC_VARIABLES[WS_SERVICE_NAME]=$WS_SERVICE_NAME
+# ttyd service name
+WS_SERVICE_NAME_TTYD=ttyd-$WS_SERVICE_NAME
+echo WS_SERVICE_NAME_TTYD=$WS_SERVICE_NAME_TTYD
 SC_VARIABLES[WS_SERVICE_NAME]=$WS_SERVICE_NAME
 # ttyd port - one per repo/role - note that 7681 is the default
 TTYD_PORT=7681
 echo TTYD_PORT=$TTYD_PORT
+# your primary IP
+MY_IP=$(hostname -I | awk '{print $1}')
+echo MY_IP=$MY_IP
 
 echo
 echo property variables:
@@ -242,6 +249,7 @@ echo
 #sudo chown -R www-data:www-data /var/www/$WS_SERVICE_NAME/
 #sudo chmod -R 755 /var/www/$WS_SERVICE_NAME/
 
+#sudo sed -i "s|WS_SERVICE_NAME_TTYD|$WS_SERVICE_NAME_TTYD|g" $WI_REPO_DIR/util/nginx-config
 #sudo sed -i "s|WS_SERVICE_NAME|$WS_SERVICE_NAME|g" $WI_REPO_DIR/util/nginx-config
 #sudo sed -i "s|TTYD_PORT|$TTYD_PORT|g" $WI_REPO_DIR/util/nginx-config
 #sudo cp $WI_REPO_DIR/util/nginx-config $WI_REPO_DIR/util/$WS_SERVICE_NAME
@@ -252,10 +260,12 @@ echo
 #sudo systemctl restart nginx
 #### end config of nginx ####
 
-#### update book.toml ####
+#### update book ####
 #sudo sed -i "s|GH_PROJECT|$GH_PROJECT|g" $WI_REPO_DIR/book.toml
 #sudo sed -i "s|GH_REPO|$GH_REPO|g" $WI_REPO_DIR/book.toml
-#### end update book.toml ####
+#sudo sed -i "s|MY_IP|$MY_IP|g" $WI_REPO_DIR/theme/head.hbs
+#sudo sed -i "s|WS_SERVICE_NAME_TTYD|$WS_SERVICE_NAME_TTYD|g" $WI_REPO_DIR/theme/head.hbs
+#### end update book ####
 
 #### start update mdbook with url to ttyd ####
 ##TODO: add IP/URL to variable above
