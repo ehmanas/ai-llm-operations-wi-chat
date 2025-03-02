@@ -7,4 +7,4 @@ NEW_DIR=/home/CHAT_USER/.aichat-history/aichat-$CHAT_DATE
 cp -r /home/CHAT_USER/.config/aichat/ $NEW_DIR
 
 export AICHAT_CONFIG_DIR="$NEW_DIR"
-/home/CHAT_USER/.cargo/bin/aichat --rag AI_RAG_ALL --role AI_ROLE_STARTER
+/usr/local/bin/aichat --rag AI_RAG_ALL --role AI_ROLE_STARTER
