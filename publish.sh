@@ -76,8 +76,11 @@ echo WI_REPO_DIR=$WI_REPO_DIR
 WI_SRC_DIR=$WI_REPO_DIR/"src-work-instructions"
 echo WI_SRC_DIR=$WI_SRC_DIR
 # AI role that tells your LLM how to answer questions
-AI_ROLE_STARTER=airole-starter.md
+AI_ROLE_STARTER=airole-starter
 echo AI_ROLE_STARTER=$AI_ROLE_STARTER
+# AI role that tells your LLM how to answer questions
+AI_ROLE_STARTER_MD=$AI_ROLE_STARTER.md
+echo AI_ROLE_STARTER_MD=$AI_ROLE_STARTER_MD
 # AI RAG Name for where all documents are maintained
 AI_RAG_ALL=wi-rag-all
 echo AI_RAG_ALL=$AI_RAG_ALL
@@ -132,7 +135,7 @@ echo WS_NGINX_DIR=$WS_NGINX_DIR
 #cd $SC_SCRIPT_DIR
 #sudo mkdir -p /home/$CHAT_USER/.config/aichat/roles/
 #sudo cp util/config.yaml /home/$CHAT_USER/.config/aichat/.
-#sudo ln -s $WI_SRC_DIR/$AI_ROLE_STARTER /home/$CHAT_USER/.config/aichat/roles/$AI_ROLE_STARTER
+#sudo ln -s $WI_SRC_DIR/$AI_ROLE_STARTER_MD /home/$CHAT_USER/.config/aichat/roles/$AI_ROLE_STARTER_MD
 #echo manually add claude and openai keys to ~/.config/aichat/config.yaml
 #echo run \`sudo -u $CHAT_USER aichat\` and send a test message to confirm all works as expected
 #echo run \`sudo -u $CHAT_USER aichat --role $AI_ROLE_STARTER\` without the .md suffix and send a test message to confirm the role works as expected
