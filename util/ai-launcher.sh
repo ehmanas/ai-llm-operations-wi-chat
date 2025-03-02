@@ -4,6 +4,7 @@
 
 CHAT_DATE=`date +%Y%m%d-%H%M%S-%N | cut -b1-21`
 NEW_DIR=/home/CHAT_USER/.aichat-history/aichat-$CHAT_DATE
+mkdir -p /home/CHAT_USER/.aichat-history/
 cp -r /home/CHAT_USER/.config/aichat/ $NEW_DIR
 
 export AICHAT_CONFIG_DIR="$NEW_DIR"
