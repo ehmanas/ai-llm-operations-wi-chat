@@ -166,7 +166,6 @@ echo WS_NGINX_DIR=$WS_NGINX_DIR
 ##TODO: run `aichat --role $AI_ROLE_STARTER --rag $AI_RAG_ALL` and send a test message to confirm the role and rag work together as expected
 #### end create RAG ####
 
-#HERE
 #### start ttyd installation ####
 #cd /tmp/
 #sudo apt-get update
@@ -177,6 +176,7 @@ echo WS_NGINX_DIR=$WS_NGINX_DIR
 #make && sudo make install
 #### end ttyd installation ####
 
+####HERE NEXT####
 #### start ttyd service ####
 ##TODO: update $WI_ROOT_DIR/util/ttyd.service to reflect $OS_USER (may not be debian - replace all instances)
 ##NOTE: consider creating an unpriviledged user (other than $OS_USER) - not super important since aichat repl jails the user experience...
