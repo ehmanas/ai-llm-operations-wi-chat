@@ -117,7 +117,7 @@ echo
 #sudo systemctl stop $GH_REPO-$AI_ROLE_STARTER.service
 #sudo rm -rf /etc/systemd/system/$GH_REPO-$AI_ROLE_STARTER.service
 #sudo systemctl daemon-reload
-##git reset --hard; git pull; sudo rm -rf /opt/work-instruction/; sudo deluser cathy; sudo rm -rf /home/cathy/; sudo rm -rf /tmp/ttyd/
+#git reset --hard; git pull; sudo rm -rf /opt/work-instruction/; sudo deluser cathy; sudo rm -rf /home/cathy/; sudo rm -rf /tmp/ttyd/
 
 ##NOTE: this might already be installed
 #### install config system inside local user ####
@@ -213,6 +213,9 @@ echo
 #### start ttyd service ####
 #sudo sed -i "s|CHAT_USER|$CHAT_USER|g" $WI_REPO_DIR/util/ttyd.service
 #sudo sed -i "s|WI_REPO_DIR|$WI_REPO_DIR|g" $WI_REPO_DIR/util/ttyd.service
+#sudo sed -i "s|CHAT_USER|$CHAT_USER|g" $WI_REPO_DIR/util/ai-launcher.sh
+#sudo sed -i "s|AI_RAG_ALL|$AI_RAG_ALL|g" $WI_REPO_DIR/util/ai-launcher.sh
+#sudo sed -i "s|AI_ROLE_STARTER|$AI_ROLE_STARTER|g" $WI_REPO_DIR/util/ai-launcher.sh
 #sudo cp $WI_REPO_DIR/util/ttyd.service $WI_REPO_DIR/util/$GH_REPO-$AI_ROLE_STARTER.service
 #sudo mv $WI_REPO_DIR/util/$GH_REPO-$AI_ROLE_STARTER.service /etc/systemd/system/$GH_REPO-$AI_ROLE_STARTER.service
 #sudo systemctl daemon-reload
