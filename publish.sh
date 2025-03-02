@@ -263,13 +263,13 @@ echo
 #echo "**********************"
 #echo PUBLISH_DATE = $PUBLISH_DATE
 #cd $WI_REPO_DIR/
-#cd pc-work-instruction && ./summary.sh && cd ..
-#git add .
-#git commit -m 'publisher commit summary'
-#git pull --rebase
-#/home/ubuntu/.cargo/bin/mdbook build
-#sudo rsync -a --delete book/ /var/www/procare-ws/
-#sudo chown -R www-data:www-data /var/www/procare-ws/
+#sudo $WI_REPO_DIR/util/summary.sh
+##git add .
+##git commit -m 'publisher commit summary'
+##git pull --rebase
+#/usr/local/bin/mdbook build
+#sudo rsync -a --delete book/ /var/www/$WS_SERVICE_NAME/
+#sudo chown -R www-data:www-data /var/www/$WS_SERVICE_NAME/
 #sudo rm -rf /var/www/procare-ws/.obsidian/
 ##sudo systemctl restart ttyd
 ##sudo systemctl restart nginx
