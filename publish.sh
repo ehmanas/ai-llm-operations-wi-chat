@@ -204,8 +204,8 @@ echo
 
 ####create variable above for ttyd service name
 #### start ttyd service ####
-#sudo sed -i "s/CHAT_USER/$CHAT_USER/g" $WI_REPO_DIR/util/ttyd.service
-#sudo sed -i "s/WI_REPO_DIR/$WI_REPO_DIR/g" $WI_REPO_DIR/util/ttyd.service
+#sudo sed -i "s|CHAT_USER|$CHAT_USER|g" $WI_REPO_DIR/util/ttyd.service
+#sudo sed -i "s|WI_REPO_DIR|$WI_REPO_DIR|g" $WI_REPO_DIR/util/ttyd.service
 #sudo cp $WI_ROOT_DIR/util/ttyd.service /etc/systemd/system/$GH_REPO-$AI_ROLE_STARTER.service
 #sudo systemctl daemon-reload
 #sudo systemctl enable $GH_REPO-$AI_ROLE_STARTER.service
