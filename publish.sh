@@ -113,6 +113,10 @@ echo
 #### end variables used by all parts of script ####
 
 ####remove stuff during testing
+#sudo systemctl disable $GH_REPO-$AI_ROLE_STARTER.service
+#sudo systemctl stop $GH_REPO-$AI_ROLE_STARTER.service
+#sudo rm -rf /etc/systemd/system/$GH_REPO-$AI_ROLE_STARTER.service
+#sudo systemctl daemon-reload
 ##git reset --hard; git pull; sudo rm -rf /opt/work-instruction/; sudo deluser cathy; sudo rm -rf /home/cathy/; sudo rm -rf /tmp/ttyd/
 
 ##NOTE: this might already be installed
