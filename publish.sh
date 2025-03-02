@@ -120,6 +120,7 @@ echo WS_NGINX_DIR=$WS_NGINX_DIR
 
 #### create local chat user ####
 #sudo adduser --disabled-password --gecos "" $CHAT_USER
+##sudo userdel $CHAT_USER; sudo rm -rf /home/$CHAT_USER/ # if needed during testing
 #### end create local chat user ####
 
 #### create /opt repositories
@@ -134,7 +135,7 @@ echo WS_NGINX_DIR=$WS_NGINX_DIR
 #sudo ln -s $WI_SRC/$AI_ROLE_STARTER /home/$CHAT_USER/.config/aichat/roles/$AI_ROLE_STARTER
 #echo manually add claude and openai keys to ~/.config/aichat/config.yaml
 #echo run \`sudo -u $CHAT_USER aichat\` and send a test message to confirm all works as expected
-#echo run \`sudo -u $CHAT_USER aichat --role $AI_ROLE_STARTER\` and send a test message to confirm the role works as expected
+#echo run \`sudo -u $CHAT_USER aichat --role $AI_ROLE_STARTER\` without the .md suffix and send a test message to confirm the role works as expected
 #### end aichat install ####
 
 #### create RAG ####
