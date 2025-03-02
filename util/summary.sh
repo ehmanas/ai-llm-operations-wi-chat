@@ -15,13 +15,15 @@ echo SC_SCRIPT_DIR_NAME=$SC_SCRIPT_DIR_NAME
 SC_SCRIPT_DIR=$(dirname "$SC_SCRIPT_DIR_NAME")
 echo SC_SCRIPT_DIR=$SC_SCRIPT_DIR
 
-cd $SC_SCRIPT_DIR || graceful_exit "could not change to directory"
+cd $SC_SCRIPT_DIR || graceful_exit "could not change to script directory"
 source ../config.properties
 
-rm SUMMARY.md
+cd $WI_SRC_DIR || graceful_exit "could not change to src directory"
+
+rm -f SUMMARY.md
 
 # Find all markdown files and create SUMMARY.md
-find . -maxdepth 1 -name "$WI_SRC_DIR/*.md" -not -name "SUMMARY.md" -not -name "chat.md" -print0 | sort -f -z | while IFS= read -r -d '' file; do
+find . -maxdepth 1 -name "*.md" -not -name "SUMMARY.md" -not -name "chat.md" -print0 | sort -f -z | while IFS= read -r -d '' file; do
     # Remove leading ./ from the path
     clean_path="${file#./}"
     # Get filename without extension for the link text
@@ -32,5 +34,3 @@ find . -maxdepth 1 -name "$WI_SRC_DIR/*.md" -not -name "SUMMARY.md" -not -name "
     echo "- [$filename](./$encoded_path)" >> SUMMARY.md
 done
 sed -i '1i\- [chat](chat.md)' SUMMARY.md
-
-mv SUMMARY.md $WI_SRC_DIR/.
