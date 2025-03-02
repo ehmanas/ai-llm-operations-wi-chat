@@ -112,6 +112,9 @@ echo
 #exit
 #### end variables used by all parts of script ####
 
+####remove stuff during testing
+##git reset --hard; git pull; sudo rm -rf /opt/work-instruction/; sudo deluser cathy; sudo rm -rf /home/cathy/; sudo rm -rf /tmp/ttyd/
+
 ##NOTE: this might already be installed
 #### install config system inside local user ####
 ##note: installs aichat, mdbook and other things needed to admin a machine for the current user - we install this on all machines - review if needed
@@ -206,7 +209,8 @@ echo
 #### start ttyd service ####
 #sudo sed -i "s|CHAT_USER|$CHAT_USER|g" $WI_REPO_DIR/util/ttyd.service
 #sudo sed -i "s|WI_REPO_DIR|$WI_REPO_DIR|g" $WI_REPO_DIR/util/ttyd.service
-#sudo cp $WI_ROOT_DIR/util/ttyd.service /etc/systemd/system/$GH_REPO-$AI_ROLE_STARTER.service
+#sudo cp $WI_REPO_DIR/util/ttyd.service $WI_REPO_DIR/util/$GH_REPO-$AI_ROLE_STARTER.service
+#sudo mv $WI_REPO_DIR/util/$GH_REPO-$AI_ROLE_STARTER.service /etc/systemd/system/$GH_REPO-$AI_ROLE_STARTER.service
 #sudo systemctl daemon-reload
 #sudo systemctl enable $GH_REPO-$AI_ROLE_STARTER.service
 #sudo systemctl start $GH_REPO-$AI_ROLE_STARTER.service

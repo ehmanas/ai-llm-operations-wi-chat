@@ -1,6 +1,3 @@
-# file to be renamed GH_REPO-AI_ROLE_STARTER.service
-# CHAT_USER
-
 [Unit]
 Description=TTyd Web Terminal
 After=network.target
