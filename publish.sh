@@ -169,7 +169,7 @@ echo
 
 #### create local chat user ####
 #sudo adduser --disabled-password --gecos "" $CHAT_USER
-##sudo userdel $CHAT_USER; sudo rm -rf /home/$CHAT_USER/ # if needed during testing
+#echo make sure $CHAT_USER exists
 #### end create local chat user ####
 
 #### create /opt repositories
@@ -180,6 +180,8 @@ echo
 #for key in "${!SC_VARIABLES[@]}"; do
 #    echo "$key=\"${SC_VARIABLES[$key]}\"" | sudo tee -a $WI_REPO_DIR/config.properties
 #done
+#echo make sure $WI_SRC_DIR exists
+#echo make sure $WI_REPO_DIR/config.properties exists
 #### end create /opt repositories
 
 #### start aichat configure ####
@@ -196,25 +198,6 @@ echo
 #### create RAG ####
 ## create a directory where we can ensure only the files we want ingested are present
 #$WI_REPO_DIR/util/stage.sh
-#### end create RAG ####
-
-##Here are the steps to build a local rag:
-##note: `>` represents being in the aichat repl
-##note: variables are not auto completed - they are just there to show you what should be added. example $AI_RAG_ALL could be 'wi-rag-all'
-##```bash
-#echo
-#echo
-#echo "### execute the following manually ###"
-#echo
-#echo
-#echo sudo -u $CHAT_USER aichat
-#echo "> .rag $AI_RAG_ALL"
-#echo "> large embedding (default)"
-#echo "> 2000 chunk (default)"
-#echo "> 100 overlap (default)"
-#echo "> $WI_REPO_DIR/rag-stage/**/*.md"
-##```
-##TODO: run `aichat --role $AI_ROLE_STARTER --rag $AI_RAG_ALL` and send a test message to confirm the role and rag work together as expected
 #### end create RAG ####
 
 #### start ttyd installation ####
@@ -267,23 +250,41 @@ echo
 #sudo sed -i "s|WS_SERVICE_NAME_TTYD|$WS_SERVICE_NAME_TTYD|g" $WI_REPO_DIR/theme/head.hbs
 #### end update book ####
 
+#### publish first version ####
+#PUBLISH_DATE=`date +%Y%m%d`-`date +%H%M%S`
+#echo "**********************"
+#echo "***first publish***"
+#echo "**********************"
+#echo PUBLISH_DATE = $PUBLISH_DATE
+#cd $WI_REPO_DIR/
+#sudo $WI_REPO_DIR/util/summary.sh
+#sudo /usr/local/bin/mdbook build
+#sudo rsync -a --delete wi/ /var/www/$WS_SERVICE_NAME/
+#sudo chown -R www-data:www-data /var/www/$WS_SERVICE_NAME/
+#sudo rm -rf /var/www/$WS_SERVICE_NAME/.obsidian/
+#### end publish first version ####
+
 #### Part 1 Summary
+#### build a local rag ####
 #echo
 #echo STEP 1:
 #echo add your openai and claude keys here: /home/$CHAT_USER/.config/aichat/config.yaml
-#echo sudo vim /home/$CHAT_USER/.config/aichat/config.yaml
+#echo    sudo vim /home/$CHAT_USER/.config/aichat/config.yaml
 #echo
-#echo STEP 2:
-#echo go to http://$MY_IP/chat.html
-#echo expand the chat dialog.
-#echo
-#echo "### populate the following (should only need to do this once) ###"
-#echo
+#echo Step 2: create your first rag
+#echo sudo -u $CHAT_USER aichat
+#echo "> .rag $AI_RAG_ALL"
 #echo "> large embedding (default)"
 #echo "> 2000 chunk (default)"
 #echo "> 100 overlap (default)"
 #echo "> $WI_REPO_DIR/rag-stage/**/*.md"
+#### end build a local rag ####
 #echo
+#echo STEP 3:
+#echo go to http://$MY_IP/chat.html
+#echo expand the chat dialog.
+#echo
+#echo You are done with configuration
 ######## END PART ONE: Configuration ##########
 
 ######### START PART TWO: PUBLISH ##########
