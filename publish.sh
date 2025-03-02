@@ -37,6 +37,9 @@ echo HERE validations
 sudo ls &>/dev/null || graceful_exit "current user does not have sudo abilities"
 
 #### Variables used by all parts of script ####
+# create an array of properties that need to be written to a file later
+declare -A SC_VARIABLES
+#SC_VARIABLES[SOME_VARIABLE]="some-value"
 # fully qualified script path and name
 SC_SCRIPT_DIR_NAME=$(readlink -f "$0")
 echo SC_SCRIPT_DIR_NAME=$SC_SCRIPT_DIR_NAME
@@ -54,6 +57,8 @@ OS_USER_GROUP=$(id -g -n)
 echo OS_USER_GROUP=$OS_USER_GROUP
 # chat user
 CHAT_USER="cathy" ###change-me###
+echo CHAT_USER=$CHAT_USER
+SC_VARIABLES[CHAT_USER]=$CHAT_USER
 # Where to install docs
 WI_ROOT_DIR=/opt/work-instruction
 echo WI_ROOT_DIR=$WI_ROOT_DIR
@@ -63,18 +68,23 @@ echo GH_URL=$GH_URL
 # git project
 GH_PROJECT="chuckstack" ###change-me###
 echo GH_PROJECT=$GH_PROJECT
+SC_VARIABLES[GH_PROJECT]=$GH_PROJECT
 # git repo
 GH_REPO="ai-llm-operations-wi-chat" ###change-me###
 echo GH_REPO=$GH_REPO
+SC_VARIABLES[GH_REPO]=$GH_REPO
 # work instruction url
 WI_URL=$GH_URL/$GH_PROJECT/$GH_REPO
 echo WI_URL=$WI_URL
+SC_VARIABLES[WI_URL]=$WI_URL
 # work instruction source full path
 WI_REPO_DIR=$WI_ROOT_DIR/$GH_PROJECT/$GH_REPO
 echo WI_REPO_DIR=$WI_REPO_DIR
+SC_VARIABLES[WI_REPO_DIR]=$WI_REPO_DIR
 # where the markdown files are located
-WI_SRC_DIR=$WI_REPO_DIR/"src-work-instructions"
+WI_SRC_DIR=$WI_REPO_DIR/"src-work-instructions" ###change-me###
 echo WI_SRC_DIR=$WI_SRC_DIR
+SC_VARIABLES[WI_SRC_DIR]=$WI_SRC_DIR
 # AI role that tells your LLM how to answer questions
 AI_ROLE_STARTER=airole-starter
 echo AI_ROLE_STARTER=$AI_ROLE_STARTER
@@ -87,9 +97,15 @@ echo AI_RAG_ALL=$AI_RAG_ALL
 # nginx website dir
 WS_NGINX_DIR=$GH_PROJECT-$GH_REPO
 echo WS_NGINX_DIR=$WS_NGINX_DIR
+SC_VARIABLES[WS_NGINX_DIR]=$WS_NGINX_DIR
 # ttyd port - one per repo/role - note that 7681 is the default
 TTYD_PORT=7681
 echo TTYD_PORT=$TTYD_PORT
+
+for key in "${!SC_VARIABLES[@]}"; do
+    echo "$key ${SC_VARIABLES[$key]}"
+done
+
 #exit
 #### end variables used by all parts of script ####
 
@@ -180,6 +196,8 @@ echo TTYD_PORT=$TTYD_PORT
 #### end ttyd installation ####
 
 ####HERE NEXT####
+####create dedicated util script to move identified files to rag-stage directory - add to Create RAG section abvoe
+####create variable above for ttyd service name
 #### start ttyd service ####
 ##TODO: update $WI_ROOT_DIR/util/ttyd.service to reflect $OS_USER (may not be debian - replace all instances)
 ##NOTE: consider creating an unpriviledged user (other than $OS_USER) - not super important since aichat repl jails the user experience...
@@ -233,6 +251,7 @@ echo TTYD_PORT=$TTYD_PORT
 #### end init config of nginx - part 2 ####
 
 #### start update mdbook with url to ttyd ####
+##TODO: add IP/URL to variable above
 ##edit theme/head.hbs to reflect url
 #### end update mdbook with url to ttyd ####
 
