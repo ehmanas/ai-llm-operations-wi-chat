@@ -161,7 +161,7 @@ done
 #sudo mkdir -p /home/$CHAT_USER/.config/aichat/roles/
 #sudo cp util/config.yaml /home/$CHAT_USER/.config/aichat/.
 #sudo ln -s $WI_SRC_DIR/$AI_ROLE_STARTER_MD /home/$CHAT_USER/.config/aichat/roles/$AI_ROLE_STARTER_MD
-#sudo chown -r $CHAT_USER:$CHAT_USER /home/$CHAT_USER/
+#sudo chown -R $CHAT_USER:$CHAT_USER /home/$CHAT_USER/
 #echo manually add claude and openai keys to /home/$CHAT_USER/.config/aichat/config.yaml
 #echo run \`sudo -u $CHAT_USER aichat\` and send a test message to confirm all works as expected
 #echo run \`sudo -u $CHAT_USER aichat --role $AI_ROLE_STARTER\` and send a test message to confirm the role works as expected
