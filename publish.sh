@@ -267,11 +267,15 @@ echo
 #sudo sed -i "s|WS_SERVICE_NAME_TTYD|$WS_SERVICE_NAME_TTYD|g" $WI_REPO_DIR/theme/head.hbs
 #### end update book ####
 
-#### start update mdbook with url to ttyd ####
-##TODO: add IP/URL to variable above
-##edit theme/head.hbs to reflect url
-#### end update mdbook with url to ttyd ####
-
+#echo go to http://$MY_IP/chat.html
+#echo expand the chat dialog.
+#echo
+#echo "### populate the following  ###"
+#echo
+#echo "> large embedding (default)"
+#echo "> 2000 chunk (default)"
+#echo "> 100 overlap (default)"
+#echo "> $WI_REPO_DIR/rag-stage/**/*.md"
 ######## END PART ONE: Configuration ##########
 
 ######### START PART TWO: PUBLISH ##########
@@ -295,34 +299,30 @@ echo
 ##sudo systemctl restart nginx
 #
 ## Create or clear the output file - prepare to cat all individual chat result directories
-#OUTPUT_FILE=~/.config/aichat/messages.md
-#> "$OUTPUT_FILE"
+#OUTPUT_FILE=/home/$CHAT_USER/.config/aichat/messages.md
+#sudo rm -f $OUTPUT_FILE
 #
 ## Find all individual messages.md files and cat them into the output file
-#find ~/.aichat-history/ -name "messages.md" -type f -exec cat {} >> "$OUTPUT_FILE" \;
+#sudo find /home/$CHAT_USER/.aichat-history/ -name "messages.md" -type f -exec cat {} | sudo -u $CHAT_USER tee -a "$OUTPUT_FILE" \;
 #
 ## evaluate combined messages
-#/home/ubuntu/.cargo/bin/aichat --no-stream -f pc-work-instruction/airole-message-review.md -f $OUTPUT_FILE
+#sudo -u $CHAT_USER /usr/local/bin/aichat --no-stream -f $WI_SRC_DIR/airole-message-review.md -f $OUTPUT_FILE
 #
 ## rebuild the rag with current files
-#rm -rf ~/pc-work-instruction/rag-stage/*
-#cp ~/pc-work-instruction/pc-work-instruction/*.md ~/pc-work-instruction/rag-stage/.
-#rm ~/pc-work-instruction/rag-stage/SUMMARY.md
-#/home/ubuntu/.cargo/bin/aichat --rag pc-rag-all --rebuild-rag
+#sudo $WI_REPO_DIR/util/stage.sh
+#sudo -u $CHAT_USER /usr/local/bin/aichat --rag $AI_RAG_ALL --rebuild-rag
 #
 ## move messages to chat history
-#mv $OUTPUT_FILE ./pc-work-instruction/prompt-history/messages-$PUBLISH_DATE.md
+#sudo mv $OUTPUT_FILE $WI_SRC_DIR/prompt-history/messages-$PUBLISH_DATE.md
 #
 ## git it
-#git add .
-#git commit -m 'publisher commit prompt history'
-#git pull --rebase
-#git push
+##git add .
+##git commit -m 'publisher commit prompt history'
+##git pull --rebase
+##git push
 #
 ## cleanup history
-#rm -rf /home/ubuntu/.aichat-history/*
+#sudo rm -rf /home/$CHAT_USER/.aichat-history/*
 #
 #echo "***ending publish***"
 #
-##### deploy aichat through ttyd
-##ttyd -a -W aichat --session --rag pc-wi --role pc-role-fd
