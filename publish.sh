@@ -267,15 +267,23 @@ echo
 #sudo sed -i "s|WS_SERVICE_NAME_TTYD|$WS_SERVICE_NAME_TTYD|g" $WI_REPO_DIR/theme/head.hbs
 #### end update book ####
 
+#### Part 1 Summary
+#echo
+#echo STEP 1:
+#echo add your openai and claude keys here: /home/$CHAT_USER/.config/aichat/config.yaml
+#echo sudo vim /home/$CHAT_USER/.config/aichat/config.yaml
+#echo
+#echo STEP 2:
 #echo go to http://$MY_IP/chat.html
 #echo expand the chat dialog.
 #echo
-#echo "### populate the following  ###"
+#echo "### populate the following (should only need to do this once) ###"
 #echo
 #echo "> large embedding (default)"
 #echo "> 2000 chunk (default)"
 #echo "> 100 overlap (default)"
 #echo "> $WI_REPO_DIR/rag-stage/**/*.md"
+#echo
 ######## END PART ONE: Configuration ##########
 
 ######### START PART TWO: PUBLISH ##########
