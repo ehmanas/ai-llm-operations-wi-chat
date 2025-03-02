@@ -107,6 +107,7 @@ echo property variables:
 for key in "${!SC_VARIABLES[@]}"; do
     echo "$key=\"${SC_VARIABLES[$key]}\""
 done
+echo
 
 #exit
 #### end variables used by all parts of script ####
@@ -201,17 +202,15 @@ done
 #make && sudo make install
 #### end ttyd installation ####
 
-####HERE NEXT####
-####create dedicated util script to move identified files to rag-stage directory - add to Create RAG section abvoe
 ####create variable above for ttyd service name
 #### start ttyd service ####
-##TODO: update $WI_ROOT_DIR/util/ttyd.service to reflect $OS_USER (may not be debian - replace all instances)
-##NOTE: consider creating an unpriviledged user (other than $OS_USER) - not super important since aichat repl jails the user experience...
-#sudo cp $WI_ROOT_DIR/util/ttyd.service /etc/systemd/system/.
+#sudo sed -i "s/CHAT_USER/$CHAT_USER/g" $WI_REPO_DIR/util/ttyd.service
+#sudo sed -i "s/WI_REPO_DIR/$WI_REPO_DIR/g" $WI_REPO_DIR/util/ttyd.service
+#sudo cp $WI_ROOT_DIR/util/ttyd.service /etc/systemd/system/$GH_REPO-$AI_ROLE_STARTER.service
 #sudo systemctl daemon-reload
-#sudo systemctl enable ttyd
-#sudo systemctl start ttyd
-##sudo journalctl -u ttyd #show logs for ttyd
+#sudo systemctl enable $GH_REPO-$AI_ROLE_STARTER.service
+#sudo systemctl start $GH_REPO-$AI_ROLE_STARTER.service
+##sudo journalctl -u $GH_REPO-$AI_ROLE_STARTER.service #show logs for ttyd
 #### end ttyd service ####
 
 #### start init config of nginx - part 1 ####
