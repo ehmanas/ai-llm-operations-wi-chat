@@ -55,8 +55,8 @@ echo OS_USER_GROUP=$OS_USER_GROUP
 # chat user
 CHAT_USER="cathy" ###change-me###
 # Where to install docs
-WI_DIR=/opt/work-instruction
-echo WI_DIR=$WI_DIR
+WI_ROOT_DIR=/opt/work-instruction
+echo WI_ROOT_DIR=$WI_ROOT_DIR
 # git URL
 GH_URL="https://github.com"
 echo GH_URL=$GH_URL
@@ -70,11 +70,11 @@ echo GH_REPO=$GH_REPO
 WI_URL=$GH_URL/$GH_PROJECT/$GH_REPO
 echo WI_URL=$WI_URL
 # work instruction source full path
-WI_SRC_DIR=$WI_DIR/$GH_PROJECT/$GH_REPO
-echo WI_SRC_DIR=$WI_SRC_DIR
+WI_REPO_DIR=$WI_ROOT_DIR/$GH_PROJECT/$GH_REPO
+echo WI_REPO_DIR=$WI_REPO_DIR
 # where the markdown files are located
-WI_SRC=$WI_SRC_DIR/"src-work-instructions"
-echo WI_SRC=$WI_SRC
+WI_SRC_DIR=$WI_REPO_DIR/"src-work-instructions"
+echo WI_SRC_DIR=$WI_SRC_DIR
 # AI role that tells your LLM how to answer questions
 AI_ROLE_STARTER=airole-starter.md
 echo AI_ROLE_STARTER=$AI_ROLE_STARTER
@@ -100,9 +100,9 @@ echo WS_NGINX_DIR=$WS_NGINX_DIR
 
 ##NOTE: this secton needs to be deleted
 #### create book repo artifacts ####
-#sudo mkdir -p $WI_DIR
-#sudo chown $OS_USER:$OS_USER_GROUP $WI_DIR
-#cd $WI_DIR
+#sudo mkdir -p $WI_ROOT_DIR
+#sudo chown $OS_USER:$OS_USER_GROUP $WI_ROOT_DIR
+#cd $WI_ROOT_DIR
 #git config --global credential.helper 'cache --timeout 7200000' #Note - better to use ssh key
 #git clone $WI_URL # this is your obsidian repository
 #cd $GH_REPO
@@ -124,15 +124,15 @@ echo WS_NGINX_DIR=$WS_NGINX_DIR
 #### end create local chat user ####
 
 #### create /opt repositories
-#sudo mkdir -p $WI_DIR/$GH_PROJECT/
-#sudo cp -r $SC_SCRIPT_DIR/ $WI_DIR/$GH_PROJECT/
+#sudo mkdir -p $WI_ROOT_DIR/$GH_PROJECT/
+#sudo cp -r $SC_SCRIPT_DIR/ $WI_ROOT_DIR/$GH_PROJECT/
 #### end create /opt repositories
 
 #### start aichat configure ####
 #cd $SC_SCRIPT_DIR
 #sudo mkdir -p /home/$CHAT_USER/.config/aichat/roles/
 #sudo cp util/config.yaml /home/$CHAT_USER/.config/aichat/.
-#sudo ln -s $WI_SRC/$AI_ROLE_STARTER /home/$CHAT_USER/.config/aichat/roles/$AI_ROLE_STARTER
+#sudo ln -s $WI_SRC_DIR/$AI_ROLE_STARTER /home/$CHAT_USER/.config/aichat/roles/$AI_ROLE_STARTER
 #echo manually add claude and openai keys to ~/.config/aichat/config.yaml
 #echo run \`sudo -u $CHAT_USER aichat\` and send a test message to confirm all works as expected
 #echo run \`sudo -u $CHAT_USER aichat --role $AI_ROLE_STARTER\` without the .md suffix and send a test message to confirm the role works as expected
@@ -140,21 +140,21 @@ echo WS_NGINX_DIR=$WS_NGINX_DIR
 
 #### create RAG ####
 # create a directory where we can ensure only the files we want ingested are present
-#mkdir -p $WI_DIR/rag-stage
-#cp $WI_SRC_DIR/*.md $WI_DIR/rag-stage/
+#mkdir -p $WI_REPO_DIR/rag-stage
+#cp $WI_SRC_DIR/*.md $WI_REPO_DIR/rag-stage/
 
 ##Here are the steps to build a local rag:
 ##note: `>` represents being in the aichat repl
 ##note: variables are not auto completed - they are just there to show you what should be added. example $AI_RAG_ALL could be 'wi-rag-all'
 ##```bash
 #echo AI_RAG_ALL=$AI_RAG_ALL
-#echo rag directory = $WI_DIR/rag-stage/\*\*/\*.md
+#echo rag directory = $WI_ROOT_DIR/rag-stage/\*\*/\*.md
 #aichat
 #> .rag $AI_RAG_ALL
 #> large embedding (default)
 #> 2000 chunk (default)
 #> 100 overlap (default)
-#> $WI_DIR/rag-stage/**/*.md
+#> $WI_ROOT_DIR/rag-stage/**/*.md
 ##```
 ##TODO: run `aichat --role $AI_ROLE_STARTER --rag $AI_RAG_ALL` and send a test message to confirm the role and rag work together as expected
 #### end create RAG ####
@@ -170,9 +170,9 @@ echo WS_NGINX_DIR=$WS_NGINX_DIR
 #### end ttyd installation ####
 
 #### start ttyd service ####
-##TODO: update $WI_DIR/util/ttyd.service to reflect $OS_USER (may not be debian - replace all instances)
+##TODO: update $WI_ROOT_DIR/util/ttyd.service to reflect $OS_USER (may not be debian - replace all instances)
 ##NOTE: consider creating an unpriviledged user (other than $OS_USER) - not super important since aichat repl jails the user experience...
-#sudo cp $WI_DIR/util/ttyd.service /etc/systemd/system/.
+#sudo cp $WI_ROOT_DIR/util/ttyd.service /etc/systemd/system/.
 #sudo systemctl daemon-reload
 #sudo systemctl enable ttyd
 #sudo systemctl start ttyd
