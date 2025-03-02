@@ -150,6 +150,10 @@ done
 #### create /opt repositories
 #sudo mkdir -p $WI_ROOT_DIR/$GH_PROJECT/
 #sudo cp -r $SC_SCRIPT_DIR/ $WI_ROOT_DIR/$GH_PROJECT/
+## create properties file:
+#for key in "${!SC_VARIABLES[@]}"; do
+#    echo "$key=\"${SC_VARIABLES[$key]}\"" | sudo tee -a $WI_REPO_DIR/config.properties
+#done
 #### end create /opt repositories
 
 #### start aichat configure ####
