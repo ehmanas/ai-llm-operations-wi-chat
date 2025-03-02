@@ -280,7 +280,7 @@ echo
 #sudo /usr/local/bin/mdbook build
 #sudo rsync -a --delete wi/ /var/www/$WS_SERVICE_NAME/
 #sudo chown -R www-data:www-data /var/www/$WS_SERVICE_NAME/
-#sudo rm -rf /var/www/procare-ws/.obsidian/
+#sudo rm -rf /var/www/$WS_SERVICE_NAME/.obsidian/
 ##sudo systemctl restart ttyd
 ##sudo systemctl restart nginx
 #
