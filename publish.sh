@@ -119,6 +119,7 @@ echo
 #sudo systemctl daemon-reload
 #sudo rm -rf /var/www/$WS_SERVICE_NAME
 #sudo rm -f /etc/nginx/sites-available/$WS_SERVICE_NAME
+#sudo rm /etc/nginx/sites-enabled/$WS_SERVICE_NAME
 #sudo rm -rf /opt/work-instruction/
 #sudo deluser cathy; sudo rm -rf /home/cathy/
 #sudo rm -rf /tmp/ttyd/
