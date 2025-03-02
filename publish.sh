@@ -81,8 +81,12 @@ SC_VARIABLES[WI_URL]=$WI_URL
 WI_REPO_DIR=$WI_ROOT_DIR/$GH_PROJECT/$GH_REPO
 echo WI_REPO_DIR=$WI_REPO_DIR
 SC_VARIABLES[WI_REPO_DIR]=$WI_REPO_DIR
-# where the markdown files are located
-WI_SRC_DIR=$WI_REPO_DIR/"src-work-instructions" ###change-me###
+# name of the book src directory
+WI_SRC="src-work-instructions" ###change-me###
+echo WI_SRC=$WI_SRC
+SC_VARIABLES[WI_SRC]=$WI_SRC
+# full path where the markdown files are located
+WI_SRC_DIR=$WI_REPO_DIR/$WI_SRC
 echo WI_SRC_DIR=$WI_SRC_DIR
 SC_VARIABLES[WI_SRC_DIR]=$WI_SRC_DIR
 # AI role that tells your LLM how to answer questions
@@ -247,6 +251,11 @@ echo
 #sudo rm -f /etc/nginx/sites-enabled/default
 #sudo systemctl restart nginx
 #### end config of nginx ####
+
+#### update book.toml ####
+#sudo sed -i "s|GH_PROJECT|$GH_PROJECT|g" $WI_REPO_DIR/book.toml
+#sudo sed -i "s|GH_REPO|$GH_REPO|g" $WI_REPO_DIR/book.toml
+#### end update book.toml ####
 
 #### start update mdbook with url to ttyd ####
 ##TODO: add IP/URL to variable above
