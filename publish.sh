@@ -138,26 +138,27 @@ echo WS_NGINX_DIR=$WS_NGINX_DIR
 #sudo ln -s $WI_SRC_DIR/$AI_ROLE_STARTER_MD /home/$CHAT_USER/.config/aichat/roles/$AI_ROLE_STARTER_MD
 #echo manually add claude and openai keys to ~/.config/aichat/config.yaml
 #echo run \`sudo -u $CHAT_USER aichat\` and send a test message to confirm all works as expected
-#echo run \`sudo -u $CHAT_USER aichat --role $AI_ROLE_STARTER\` without the .md suffix and send a test message to confirm the role works as expected
+#echo run \`sudo -u $CHAT_USER aichat --role $AI_ROLE_STARTER\` and send a test message to confirm the role works as expected
 #### end aichat install ####
 
 #### create RAG ####
-# create a directory where we can ensure only the files we want ingested are present
-#mkdir -p $WI_REPO_DIR/rag-stage
-#cp $WI_SRC_DIR/*.md $WI_REPO_DIR/rag-stage/
+## create a directory where we can ensure only the files we want ingested are present
+#sudo mkdir -p $WI_REPO_DIR/rag-stage
+#sudo cp $WI_SRC_DIR/*.md $WI_REPO_DIR/rag-stage/
+#### end create RAG ####
 
 ##Here are the steps to build a local rag:
 ##note: `>` represents being in the aichat repl
 ##note: variables are not auto completed - they are just there to show you what should be added. example $AI_RAG_ALL could be 'wi-rag-all'
 ##```bash
 #echo AI_RAG_ALL=$AI_RAG_ALL
-#echo rag directory = $WI_ROOT_DIR/rag-stage/\*\*/\*.md
+#echo rag directory = $WI_REPO_DIR/rag-stage/\*\*/\*.md
 #aichat
 #> .rag $AI_RAG_ALL
 #> large embedding (default)
 #> 2000 chunk (default)
 #> 100 overlap (default)
-#> $WI_ROOT_DIR/rag-stage/**/*.md
+#> $WI_REPO_DIR/rag-stage/\*\*/\*.md
 ##```
 ##TODO: run `aichat --role $AI_ROLE_STARTER --rag $AI_RAG_ALL` and send a test message to confirm the role and rag work together as expected
 #### end create RAG ####
