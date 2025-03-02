@@ -94,10 +94,10 @@ echo AI_ROLE_STARTER_MD=$AI_ROLE_STARTER_MD
 # AI RAG Name for where all documents are maintained
 AI_RAG_ALL=wi-rag-all
 echo AI_RAG_ALL=$AI_RAG_ALL
-# nginx website dir
-WS_NGINX_DIR=$GH_PROJECT-$GH_REPO
-echo WS_NGINX_DIR=$WS_NGINX_DIR
-SC_VARIABLES[WS_NGINX_DIR]=$WS_NGINX_DIR
+# nginx website dir ant ttyd service name
+WS_SERVICE_NAME=$GH_REPO-$AI_ROLE_STARTER
+echo WS_SERVICE_NAME=$WS_SERVICE_NAME
+SC_VARIABLES[WS_SERVICE_NAME]=$WS_SERVICE_NAME
 # ttyd port - one per repo/role - note that 7681 is the default
 TTYD_PORT=7681
 echo TTYD_PORT=$TTYD_PORT
@@ -113,11 +113,16 @@ echo
 #### end variables used by all parts of script ####
 
 ####remove stuff during testing
-#sudo systemctl disable $GH_REPO-$AI_ROLE_STARTER.service
-#sudo systemctl stop $GH_REPO-$AI_ROLE_STARTER.service
-#sudo rm -rf /etc/systemd/system/$GH_REPO-$AI_ROLE_STARTER.service
+#sudo systemctl disable $WS_SERVICE_NAME.service
+#sudo systemctl stop $WS_SERVICE_NAME.service
+#sudo rm -rf /etc/systemd/system/$WS_SERVICE_NAME.service
 #sudo systemctl daemon-reload
-#git reset --hard; git pull; sudo rm -rf /opt/work-instruction/; sudo deluser cathy; sudo rm -rf /home/cathy/; sudo rm -rf /tmp/ttyd/
+#sudo rm -rf /var/www/$WS_SERVICE_NAME
+#sudo rm -f /etc/nginx/sites-available/$WS_SERVICE_NAME
+#sudo rm -rf /opt/work-instruction/
+#sudo deluser cathy; sudo rm -rf /home/cathy/
+#sudo rm -rf /tmp/ttyd/
+#git reset --hard; git pull
 
 ##NOTE: this might already be installed
 #### install config system inside local user ####
@@ -216,55 +221,30 @@ echo
 #sudo sed -i "s|CHAT_USER|$CHAT_USER|g" $WI_REPO_DIR/util/ai-launcher.sh
 #sudo sed -i "s|AI_RAG_ALL|$AI_RAG_ALL|g" $WI_REPO_DIR/util/ai-launcher.sh
 #sudo sed -i "s|AI_ROLE_STARTER|$AI_ROLE_STARTER|g" $WI_REPO_DIR/util/ai-launcher.sh
-#sudo cp $WI_REPO_DIR/util/ttyd.service $WI_REPO_DIR/util/$GH_REPO-$AI_ROLE_STARTER.service
-#sudo mv $WI_REPO_DIR/util/$GH_REPO-$AI_ROLE_STARTER.service /etc/systemd/system/$GH_REPO-$AI_ROLE_STARTER.service
+#sudo cp $WI_REPO_DIR/util/ttyd.service $WI_REPO_DIR/util/$WS_SERVICE_NAME.service
+#sudo mv $WI_REPO_DIR/util/$WS_SERVICE_NAME.service /etc/systemd/system/$WS_SERVICE_NAME.service
 #sudo systemctl daemon-reload
-#sudo systemctl enable $GH_REPO-$AI_ROLE_STARTER.service
-#sudo systemctl start $GH_REPO-$AI_ROLE_STARTER.service
-##sudo journalctl -u $GH_REPO-$AI_ROLE_STARTER.service #show logs for ttyd
+#sudo systemctl enable $WS_SERVICE_NAME.service
+#sudo systemctl start $WS_SERVICE_NAME.service
+##sudo journalctl -u $WS_SERVICE_NAME.service #show logs for ttyd
 #### end ttyd service ####
 
-#### start init config of nginx - part 1 ####
+#### config of nginx ####
 #sudo apt install nginx -y
-#echo WS_NGINX_DIR=$WS_NGINX_DIR
-#sudo mkdir -p /var/www/$WS_NGINX_DIR
-#sudo chown -R www-data:www-data /var/www/$WS_NGINX_DIR/
-#sudo chmod -R 755 /var/www/$WS_NGINX_DIR/
-#sudo touch /etc/nginx/sites-available/$WS_NGINX_DIR
-#### end init config of nginx - part 1 ####
+#echo WS_SERVICE_NAME=$WS_SERVICE_NAME
+#sudo mkdir -p /var/www/$WS_SERVICE_NAME
+#sudo chown -R www-data:www-data /var/www/$WS_SERVICE_NAME/
+#sudo chmod -R 755 /var/www/$WS_SERVICE_NAME/
 
-	##TODO: add the following to /etc/nginx/sites-available/$WS_NGINX_DIR
-	##TODO: change $WS_NGINX_DIR to the actual value
-
-	#server {
-	#    listen 80;
-	#    listen [::]:80;
-	#
-	#    server_name your-domain.com www.your-domain.com;
-	#    root /var/www/$WS_NGINX_DIR;
-	#    index index.html index.htm;
-	#
-	#    location / {
-	#        try_files $uri $uri/ =404;
-	#    }
-	#
-	#    location /ttyd/ {
-	#        proxy_http_version 1.1;
-	#        proxy_set_header Host $host;
-	#        proxy_set_header X-Forwarded-Proto $scheme;
-	#        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-	#        proxy_set_header Upgrade $http_upgrade;
-	#        proxy_set_header Connection "upgrade";
-	#        proxy_pass http://127.0.0.1:7681/;
-	#    }
-	#}
-	##Notes: root(/) is book and /ttyd is terminal
-
-#### start init config of nginx - part 2 ####
-#sudo ln -s /etc/nginx/sites-available/$WS_NGINX_DIR /etc/nginx/sites-enabled/
+#sudo sed -i "s|WS_SERVICE_NAME|$WS_SERVICE_NAME|g" $WI_REPO_DIR/util/nginx-config
+#sudo sed -i "s|TTYD_PORT|$TTYD_PORT|g" $WI_REPO_DIR/util/nginx-config
+#sudo cp $WI_REPO_DIR/util/nginx-config $WI_REPO_DIR/util/$WS_SERVICE_NAME
+#sudo mv $WI_REPO_DIR/util/$WS_SERVICE_NAME /etc/nginx/sites-available/$WS_SERVICE_NAME
+#echo cat /etc/nginx/sites-available/$WS_SERVICE_NAME
+#sudo ln -s /etc/nginx/sites-available/$WS_SERVICE_NAME /etc/nginx/sites-enabled/
 #sudo rm /etc/nginx/sites-enabled/default
 #sudo systemctl restart nginx
-#### end init config of nginx - part 2 ####
+#### end config of nginx ####
 
 #### start update mdbook with url to ttyd ####
 ##TODO: add IP/URL to variable above

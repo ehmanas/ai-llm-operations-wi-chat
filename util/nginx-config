@@ -1,19 +1,19 @@
-# book: WS_NGINX_DIR
-# ttyd: ttyd-WS_NGINX_DIR
+# book: WS_SERVICE_NAME
+# ttyd: ttyd-WS_SERVICE_NAME
 # ttyd-port: TTYD_PORT
 server {
     listen 80;
     listen [::]:80;
 
     server_name your-domain.com www.your-domain.com;
-    root /var/www/WS_NGINX_DIR;
+    root /var/www/WS_SERVICE_NAME;
     index index.html index.htm;
 
-    location /WS_NGINX_DIR/ {
+    location /WS_SERVICE_NAME/ {
         try_files $uri $uri/ =404;
     }
 
-    location /ttyd-WS_NGINX_DIR/ {
+    location /ttyd-WS_SERVICE_NAME/ {
         proxy_http_version 1.1;
         proxy_set_header Host $host;
         proxy_set_header X-Forwarded-Proto $scheme;
