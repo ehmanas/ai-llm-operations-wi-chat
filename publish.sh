@@ -87,6 +87,9 @@ echo AI_RAG_ALL=$AI_RAG_ALL
 # nginx website dir
 WS_NGINX_DIR=$GH_PROJECT-$GH_REPO
 echo WS_NGINX_DIR=$WS_NGINX_DIR
+# ttyd port - one per repo/role - note that 7681 is the default
+TTYD_PORT=7681
+echo TTYD_PORT=$TTYD_PORT
 #exit
 #### end variables used by all parts of script ####
 

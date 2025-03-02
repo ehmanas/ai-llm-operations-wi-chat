@@ -1,13 +1,17 @@
+# file to be renamed GH_REPO-AI_ROLE_STARTER.service
+# CHAT_USER
+
 [Unit]
 Description=TTyd Web Terminal
 After=network.target
 
 [Service]
-#ExecStart=/bin/bash -c "/usr/local/bin/ttyd -W /home/debian/.cargo/bin/aichat --rag pc-rag-all --role airole-front-desk"
-ExecStart=/bin/bash -c "/usr/local/bin/ttyd -W /home/debian/pc-work-instruction/ai-launcher.sh"
+# ai-launcher.sh needs to know what role to use - or have different service per repo per role 
+# need to specify the port: TTYD_PORT
+ExecStart=/bin/bash -c "/usr/local/bin/ttyd -W WI_REPO_DIR/util/ai-launcher.sh"
 Restart=always
-User=debian
-Group=debian
+User=CHAT_USER
+Group=CHAT_USER
 
 [Install]
 WantedBy=multi-user.target
