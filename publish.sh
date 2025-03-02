@@ -119,10 +119,16 @@ echo WS_NGINX_DIR=$WS_NGINX_DIR
 #cd $GH_REPO
 #### end create book repo artifacts ####
 
+#### create /opt repositories
+sudo mkdir $WI_DIR/$GH_PROJECT/
+sudo cp -r $SC_SCRIPT_DIR/ $WI_DIR/$GH_PROJECT/
+
+#### end create /opt repositories
+
 #### start aichat configure ####
 #cd ~
-#mkdir -p ~/.config/aichat/roles/
-#cp $WI_SRC_DIR/util/config.yaml ~/.config/aichat/.
+#mkdir -p /home/$CHAT_USER/.config/aichat/roles/
+#cp $WI_SRC_DIR/util/config.yaml /home/$CHAT_USER/.config/aichat/.
 #cd ~/.config/aichat/roles/
 #ln -s $WI_SRC_DIR/$AI_ROLE_STARTER $AI_ROLE_STARTER
 #echo manually add claude and openai keys to ~/.config/aichat/config.yaml
