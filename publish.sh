@@ -87,20 +87,6 @@ echo WS_NGINX_DIR=$WS_NGINX_DIR
 #exit
 #### end variables used by all parts of script ####
 
-#### Ensure proper Locale ####
-##locale - important for `mdbook build` step
-#sudo locale-gen en_US.UTF-8
-#sudo update-locale LANG=en_US.UTF-8 LANGUAGE=en_US LC_ALL=en_US.UTF-8
-##note: the below statements should help prevent from needing to disconned before continuing
-#export LANG=en_US.UTF-8
-#export LANGUAGE=en_US
-#export LC_ALL=en_US.UTF-8
-#### end ensure proper Locale ####
-
-#### create local chat user ####
-#sudo adduser --disabled-password --gecos "" $CHAT_USER
-#### end create local chat user ####
-
 ##NOTE: this might already be installed
 #### install config system inside local user ####
 ##note: installs aichat, mdbook and other things needed to admin a machine for the current user - we install this on all machines - review if needed
@@ -121,6 +107,20 @@ echo WS_NGINX_DIR=$WS_NGINX_DIR
 #git clone $WI_URL # this is your obsidian repository
 #cd $GH_REPO
 #### end create book repo artifacts ####
+
+#### Ensure proper Locale ####
+##locale - important for `mdbook build` step
+#sudo locale-gen en_US.UTF-8
+#sudo update-locale LANG=en_US.UTF-8 LANGUAGE=en_US LC_ALL=en_US.UTF-8
+##note: the below statements should help prevent from needing to disconned before continuing
+#export LANG=en_US.UTF-8
+#export LANGUAGE=en_US
+#export LC_ALL=en_US.UTF-8
+#### end ensure proper Locale ####
+
+#### create local chat user ####
+#sudo adduser --disabled-password --gecos "" $CHAT_USER
+#### end create local chat user ####
 
 #### create /opt repositories
 #sudo mkdir -p $WI_DIR/$GH_PROJECT/
