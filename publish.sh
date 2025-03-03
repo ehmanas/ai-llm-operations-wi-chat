@@ -271,7 +271,7 @@ echo
 #echo add your openai and claude keys here: /home/$CHAT_USER/.config/aichat/config.yaml
 #echo    sudo vim /home/$CHAT_USER/.config/aichat/config.yaml
 #echo
-#echo Step 2: create your first rag
+#echo Step 2: create your first rag (note: the script will keep this rag updated over time)
 #echo sudo -u $CHAT_USER aichat
 #echo "> .rag $AI_RAG_ALL"
 #echo "> large embedding (default)"
@@ -284,7 +284,10 @@ echo
 #echo go to http://$MY_IP/chat.html
 #echo expand the chat dialog.
 #echo
-#echo You are done with configuration
+#echo You are done with configuration. Here are the next steps:
+#echo  - note that $WI_ROOT_DIR has no git repo - use this as your starting point or merge in changes from another repo
+#echo  - review and test part two (below in publish.sh)
+#echo  - set up a cron job to execute part two
 ######## END PART ONE: Configuration ##########
 
 ######### START PART TWO: PUBLISH ##########
@@ -333,5 +336,8 @@ echo
 ## cleanup history
 #sudo rm -rf /home/$CHAT_USER/.aichat-history/*
 #
+#echo "**********************"
 #echo "***ending publish***"
+#echo "**********************"
 #
+######### END PART TWO: PUBLISH ##########
