@@ -170,6 +170,7 @@ echo
 
 #### copy over util directory ####
 #sudo cp -r $SC_SCRIPT_DIR/util $WI_REPO_DIR/
+#sudo cp $SC_SCRIPT_DIR/publish.sh $WI_REPO_DIR/.
 #### end copy over util directory ####
 
 #### start aichat configure ####
@@ -273,14 +274,10 @@ echo
 #echo "go to http://$MY_IP/$WS_SERVICE_NAME_TTYD/ for dedicated terminal"
 #echo
 #echo "STEP 4:"
-#echo "get rid of the $SC_SCRIPT_DIR directory (keep it will cause confusion)."
-#echo "it was moved to $WI_REPO_DIR in previous steps."
-#echo "the goal is that you can execute this script as many times as you have different chat requirements"
-#echo
-#echo "NEXT STEPS - now that you are done with configuration:"
-#echo " - note that $WI_ROOT_DIR has no git repo - use this as your starting point or merge in changes from another repo"
-#echo " - review, uncomment and test part two (bottom part of publish.sh)"
-#echo " - set up a cron job to execute part two"
+#echo "a copy of the publish.sh script was copied to $WI_REPO_DIR/"
+#echo " - update $WI_REPO_DIR/publish.sh => comment out or delete Part One now that configuration is complete"
+#echo " - update $WI_REPO_DIR/publish.sh => Part Two to perform periodic updates"
+#echo " - set up a cron job to execute part two on a timer"
 ######## END PART ONE: Configuration ##########
 
 ######### START PART TWO: PUBLISH ##########
