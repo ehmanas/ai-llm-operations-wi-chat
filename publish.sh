@@ -180,7 +180,7 @@ echo
 #### create /opt repositories
 #sudo mkdir -p $WI_ROOT_DIR/$GH_PROJECT/
 ##sudo cp -r $SC_SCRIPT_DIR/ $WI_ROOT_DIR/$GH_PROJECT/ #delme
-#sudo git clone $GH_URL $WI_ROOT_DIR/$GH_PROJECT
+#sudo git clone $WI_URL $WI_ROOT_DIR/$GH_PROJECT
 #exit #delme
 ##sudo rm -rf $WI_REPO_DIR/.git #delme
 ## create properties file:
