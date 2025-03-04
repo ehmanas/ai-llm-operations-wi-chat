@@ -30,16 +30,4 @@ server {
         proxy_send_timeout 300s;
     }
 
-    # Handle 404 errors for this service's paths
-    # TODO: this results in all pages in this path going to 404 - I have to comment out this section to see the above pages. Note this nginx config file is one of many nginx configs on this same machine. This section only needs to catch errors for the below paths.
-    # Commenting out until the above todo is resolved
-    #location ~ ^/(WS_SERVICE_NAME|WS_SERVICE_NAME_TTYD)/.* {
-    #    return 404;
-    #}
-    # Custom error page for 404 errors only for these specific paths
-    error_page 404 /404.html;
-    location = /404.html {
-        root /var/www/WS_SERVICE_NAME;
-        internal;
-    }
 }

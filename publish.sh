@@ -283,9 +283,9 @@ echo
 #### end build a local rag ####
 #echo
 #echo "STEP 3:"
-#echo "go to http://$MY_IP/$WS_SERVICE_NAME for documents"
+#echo "go to http://$MY_IP/$WS_SERVICE_NAME/chat.html for documents"
 #echo "expand the chat section to see the chat dialog."
-#echo "go to http://$MY_IP/$WS_SERVICE_NAME_TTYD for dedicated terminal"
+#echo "go to http://$MY_IP/$WS_SERVICE_NAME_TTYD/ for dedicated terminal"
 #echo
 #echo "STEP 4:"
 #echo "get rid of the $SC_SCRIPT_DIR directory (keep it will cause confusion)."
