@@ -124,7 +124,6 @@ echo
 #exit
 #### end variables used by all parts of script ####
 
-######## PART ONE: Configuration ##########
 ####remove stuff during testing
 #sudo systemctl disable $WS_SERVICE_NAME.service
 #sudo systemctl stop $WS_SERVICE_NAME.service
@@ -140,6 +139,8 @@ echo
 
 ##TODO: create section to check for conflicts to prevent from overwriting existing deployment
 ## Use previos delete as key
+
+######## PART ONE: Configuration ##########
 
 #### Ensure proper Locale ####
 ##locale - important for `mdbook build` step
