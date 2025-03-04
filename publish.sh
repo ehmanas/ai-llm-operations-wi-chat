@@ -267,12 +267,12 @@ echo
 #### Part 1 Summary
 #### build a local rag ####
 #echo
-#echo STEP 1:
-#echo add your openai and claude keys here: /home/$CHAT_USER/.config/aichat/config.yaml
-#echo    sudo vim /home/$CHAT_USER/.config/aichat/config.yaml
+#echo "STEP 1:"
+#echo "add your openai and claude keys here: /home/$CHAT_USER/.config/aichat/config.yaml"
+#echo "   sudo vim /home/$CHAT_USER/.config/aichat/config.yaml"
 #echo
-#echo STEP 2: create your first rag (note: the script will keep this rag updated over time)
-#echo sudo -u $CHAT_USER aichat
+#echo "STEP 2: create your first rag (note: the script will keep this rag updated over time)"
+#echo "sudo -u $CHAT_USER aichat"
 #echo "> .rag $AI_RAG_ALL"
 #echo "> large embedding (default)"
 #echo "> 2000 chunk (default)"
@@ -280,19 +280,20 @@ echo
 #echo "> $WI_REPO_DIR/rag-stage/**/*.md"
 #### end build a local rag ####
 #echo
-#echo STEP 3:
-#echo go to http://$MY_IP/chat.html
-#echo expand the chat dialog.
+#echo "STEP 3:"
+#echo "go to http://$MY_IP/$WS_SERVICE_NAME for documents"
+#echo "expand the chat section to see the chat dialog."
+#echo "go to http://$MY_IP/$WS_SERVICE_NAME_TTYD for dedicated terminal"
 #echo
-#echo STEP 4:
-#echo get rid of the $SC_SCRIPT_DIR directory (keep it will cause confusion).
-#echo it was moved to $WI_REPO_DIR in previous steps.
-#echo the goal is that you can execute this script as many times as you have different chat requirements
+#echo "STEP 4:"
+#echo "get rid of the $SC_SCRIPT_DIR directory (keep it will cause confusion)."
+#echo "it was moved to $WI_REPO_DIR in previous steps."
+#echo "the goal is that you can execute this script as many times as you have different chat requirements"
 #echo
-#echo NEXT STEPS - now that you are done with configuration:
-#echo  - note that $WI_ROOT_DIR has no git repo - use this as your starting point or merge in changes from another repo
-#echo  - review, uncomment and test part two (bottom part of publish.sh)
-#echo  - set up a cron job to execute part two
+#echo "NEXT STEPS - now that you are done with configuration:"
+#echo " - note that $WI_ROOT_DIR has no git repo - use this as your starting point or merge in changes from another repo"
+#echo " - review, uncomment and test part two (bottom part of publish.sh)"
+#echo " - set up a cron job to execute part two"
 ######## END PART ONE: Configuration ##########
 
 ######### START PART TWO: PUBLISH ##########
