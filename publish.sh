@@ -229,8 +229,10 @@ echo
 #sudo apt install nginx -y
 #echo WS_SERVICE_NAME=$WS_SERVICE_NAME
 #sudo mkdir -p /var/www/$WS_SERVICE_NAME
-#sudo chown -R www-data:www-data /var/www/$WS_SERVICE_NAME/
-#sudo chmod -R 755 /var/www/$WS_SERVICE_NAME/
+#sudo cp $SC_SCRIPT_DIR/util/404.html /var/www/.
+#sudo chown -R www-data:www-data /var/www/
+#sudo chmod -R 755 /var/www/
+#### end config of nginx ####
 
 #sudo sed -i "s|WS_SERVICE_NAME_TTYD|$WS_SERVICE_NAME_TTYD|g" $WI_REPO_DIR/util/nginx-config
 #sudo sed -i "s|WS_SERVICE_NAME|$WS_SERVICE_NAME|g" $WI_REPO_DIR/util/nginx-config
