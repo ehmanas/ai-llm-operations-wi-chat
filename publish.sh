@@ -222,7 +222,7 @@ echo
 #sudo sed -i "s|CHAT_USER|$CHAT_USER|g" $WI_REPO_DIR/util/ai-launcher.sh
 #sudo sed -i "s|AI_RAG_ALL|$AI_RAG_ALL|g" $WI_REPO_DIR/util/ai-launcher.sh
 #sudo sed -i "s|AI_ROLE_STARTER|$AI_ROLE_STARTER|g" $WI_REPO_DIR/util/ai-launcher.sh
-#sudo cp $SC_SCRIPT_DIR/util/ttyd.service $WI_REPO_DIR/util/$WS_SERVICE_NAME.service
+#sudo cp $SC_SCRIPT_DIR/util/ttyd.service $SC_SCRIPT_DIR/util/$WS_SERVICE_NAME.service
 #sudo mv $SC_SCRIPT_DIR/util/$WS_SERVICE_NAME.service /etc/systemd/system/$WS_SERVICE_NAME.service
 #sudo systemctl daemon-reload
 #sudo systemctl enable $WS_SERVICE_NAME.service
@@ -242,7 +242,7 @@ echo
 #sudo sed -i "s|WS_SERVICE_NAME_TTYD|$WS_SERVICE_NAME_TTYD|g" $WI_REPO_DIR/util/nginx-config
 #sudo sed -i "s|WS_SERVICE_NAME|$WS_SERVICE_NAME|g" $WI_REPO_DIR/util/nginx-config
 #sudo sed -i "s|TTYD_PORT|$TTYD_PORT|g" $WI_REPO_DIR/util/nginx-config
-#sudo cp $SC_SCRIPT_DIR/util/nginx-config $WI_REPO_DIR/util/$WS_SERVICE_NAME
+#sudo cp $SC_SCRIPT_DIR/util/nginx-config $SC_SCRIPT_DIR/util/$WS_SERVICE_NAME
 #sudo mv $SC_SCRIPT_DIR/util/$WS_SERVICE_NAME /etc/nginx/sites-available/$WS_SERVICE_NAME
 #echo cat /etc/nginx/sites-available/$WS_SERVICE_NAME
 #sudo ln -s /etc/nginx/sites-available/$WS_SERVICE_NAME /etc/nginx/sites-enabled/
