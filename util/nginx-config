@@ -41,4 +41,5 @@ server {
     location = /404.html {
         root /var/www/WS_SERVICE_NAME;
         internal;
+    }
 }
