@@ -181,7 +181,6 @@ echo
 #sudo mkdir -p $WI_ROOT_DIR/$GH_PROJECT/
 ##sudo cp -r $SC_SCRIPT_DIR/ $WI_ROOT_DIR/$GH_PROJECT/ #delme
 #sudo git clone $WI_URL $WI_ROOT_DIR/$GH_PROJECT/$GH_REPO
-#exit #delme
 ##sudo rm -rf $WI_REPO_DIR/.git #delme
 ## create properties file:
 #for key in "${!SC_VARIABLES[@]}"; do
@@ -224,7 +223,7 @@ echo
 #sudo sed -i "s|AI_RAG_ALL|$AI_RAG_ALL|g" $WI_REPO_DIR/util/ai-launcher.sh
 #sudo sed -i "s|AI_ROLE_STARTER|$AI_ROLE_STARTER|g" $WI_REPO_DIR/util/ai-launcher.sh
 #sudo cp $SC_SCRIPT_DIR/util/ttyd.service $WI_REPO_DIR/util/$WS_SERVICE_NAME.service
-#sudo mv $SC_SCRIPT_DIRutil/$WS_SERVICE_NAME.service /etc/systemd/system/$WS_SERVICE_NAME.service
+#sudo mv $SC_SCRIPT_DIR/util/$WS_SERVICE_NAME.service /etc/systemd/system/$WS_SERVICE_NAME.service
 #sudo systemctl daemon-reload
 #sudo systemctl enable $WS_SERVICE_NAME.service
 #sudo systemctl start $WS_SERVICE_NAME.service
