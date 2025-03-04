@@ -157,6 +157,9 @@ echo
 #cd $GH_REPO
 #### end create book repo artifacts ####
 
+##TODO: create section to check for conflicts to prevent from overwriting existing deployment
+## Use previos delete as key
+
 #### Ensure proper Locale ####
 ##locale - important for `mdbook build` step
 #sudo locale-gen en_US.UTF-8
@@ -172,10 +175,14 @@ echo
 #echo make sure $CHAT_USER exists
 #### end create local chat user ####
 
+##TODO: In next section: instead of copy existing repo, clone from repo based on properties - this way we can use an existing repo
+
 #### create /opt repositories
 #sudo mkdir -p $WI_ROOT_DIR/$GH_PROJECT/
-#sudo cp -r $SC_SCRIPT_DIR/ $WI_ROOT_DIR/$GH_PROJECT/
-#sudo rm -rf $WI_REPO_DIR/.git
+##sudo cp -r $SC_SCRIPT_DIR/ $WI_ROOT_DIR/$GH_PROJECT/ #delme
+#sudo git clone https://$GH_URL $WI_ROOT_DIR/$GH_PROJECT
+#exit #delme
+##sudo rm -rf $WI_REPO_DIR/.git #delme
 ## create properties file:
 #for key in "${!SC_VARIABLES[@]}"; do
 #    echo "$key=\"${SC_VARIABLES[$key]}\"" | sudo tee -a $WI_REPO_DIR/config.properties
@@ -185,9 +192,8 @@ echo
 #### end create /opt repositories
 
 #### start aichat configure ####
-#cd $SC_SCRIPT_DIR
 #sudo mkdir -p /home/$CHAT_USER/.config/aichat/roles/
-#sudo cp util/config.yaml /home/$CHAT_USER/.config/aichat/.
+#sudo cp $SC_SCRIPT_DIR/util/config.yaml /home/$CHAT_USER/.config/aichat/.
 #sudo ln -s $WI_SRC_DIR/$AI_ROLE_STARTER_MD /home/$CHAT_USER/.config/aichat/roles/$AI_ROLE_STARTER_MD
 #sudo chown -R $CHAT_USER:$CHAT_USER /home/$CHAT_USER/
 #echo manually add claude and openai keys to /home/$CHAT_USER/.config/aichat/config.yaml
@@ -217,8 +223,8 @@ echo
 #sudo sed -i "s|CHAT_USER|$CHAT_USER|g" $WI_REPO_DIR/util/ai-launcher.sh
 #sudo sed -i "s|AI_RAG_ALL|$AI_RAG_ALL|g" $WI_REPO_DIR/util/ai-launcher.sh
 #sudo sed -i "s|AI_ROLE_STARTER|$AI_ROLE_STARTER|g" $WI_REPO_DIR/util/ai-launcher.sh
-#sudo cp $WI_REPO_DIR/util/ttyd.service $WI_REPO_DIR/util/$WS_SERVICE_NAME.service
-#sudo mv $WI_REPO_DIR/util/$WS_SERVICE_NAME.service /etc/systemd/system/$WS_SERVICE_NAME.service
+#sudo cp $SC_SCRIPT_DIR/util/ttyd.service $WI_REPO_DIR/util/$WS_SERVICE_NAME.service
+#sudo mv $SC_SCRIPT_DIRutil/$WS_SERVICE_NAME.service /etc/systemd/system/$WS_SERVICE_NAME.service
 #sudo systemctl daemon-reload
 #sudo systemctl enable $WS_SERVICE_NAME.service
 #sudo systemctl start $WS_SERVICE_NAME.service
@@ -237,8 +243,8 @@ echo
 #sudo sed -i "s|WS_SERVICE_NAME_TTYD|$WS_SERVICE_NAME_TTYD|g" $WI_REPO_DIR/util/nginx-config
 #sudo sed -i "s|WS_SERVICE_NAME|$WS_SERVICE_NAME|g" $WI_REPO_DIR/util/nginx-config
 #sudo sed -i "s|TTYD_PORT|$TTYD_PORT|g" $WI_REPO_DIR/util/nginx-config
-#sudo cp $WI_REPO_DIR/util/nginx-config $WI_REPO_DIR/util/$WS_SERVICE_NAME
-#sudo mv $WI_REPO_DIR/util/$WS_SERVICE_NAME /etc/nginx/sites-available/$WS_SERVICE_NAME
+#sudo cp $SC_SCRIPT_DIR/util/nginx-config $WI_REPO_DIR/util/$WS_SERVICE_NAME
+#sudo mv $SC_SCRIPT_DIR/util/$WS_SERVICE_NAME /etc/nginx/sites-available/$WS_SERVICE_NAME
 #echo cat /etc/nginx/sites-available/$WS_SERVICE_NAME
 #sudo ln -s /etc/nginx/sites-available/$WS_SERVICE_NAME /etc/nginx/sites-enabled/
 #sudo rm -f /etc/nginx/sites-enabled/default
