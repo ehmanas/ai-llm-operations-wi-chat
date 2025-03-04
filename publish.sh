@@ -8,6 +8,7 @@
 ##		bottom part is the script that runs evert time you publish
 ##NOTE: the top part is not really a script. It is designed to guide you. You can uncomment a section at a time to review and execute to configure your system.
 
+##TODO: run https://github.com/chuboe/chuboe-system-configurator - installs prerequisite tools (like mdbook and aichat)
 ##TODO: ensure running from user with sudo priviledges - assumes this is your primary user
 ##TODO: create a url for this server and update theme/head.hbs accordingly
 ##TODO: add https cert in nginx
@@ -20,7 +21,7 @@
 # each repository:
 #	is a book or collection of knowledge (has src directory)
 #	has its own book.toml
-#		we can put [chuckstack] variables in the book.toml without conflict
+#		note that we can put [chuckstack] variables in the book.toml without conflict
 #	can have multiple aichat airole files/ttyd (csr, mgr, etc...)
 #### end Repository Notes ####
 
@@ -136,27 +137,6 @@ echo
 #sudo rm -rf /tmp/ttyd/
 #git reset --hard; git pull
 
-##NOTE: this might already be installed
-#### install config system inside local user ####
-##note: installs aichat, mdbook and other things needed to admin a machine for the current user - we install this on all machines - review if needed
-#cd ~
-#sudo apt update
-#sudo apt install git
-#git clone https://github.com/chuboe/chuboe-system-configurator
-#cd chuboe-system-configurator/
-#./init.sh
-#### end config system ####
-
-##NOTE: this secton needs to be deleted
-#### create book repo artifacts ####
-#sudo mkdir -p $WI_ROOT_DIR
-#sudo chown -R $OS_USER:$OS_USER_GROUP $WI_ROOT_DIR
-#cd $WI_ROOT_DIR
-#git config --global credential.helper 'cache --timeout 7200000' #Note - better to use ssh key
-#git clone $WI_URL # this is your obsidian repository
-#cd $GH_REPO
-#### end create book repo artifacts ####
-
 ##TODO: create section to check for conflicts to prevent from overwriting existing deployment
 ## Use previos delete as key
 
@@ -172,30 +152,31 @@ echo
 
 #### create local chat user ####
 #sudo adduser --disabled-password --gecos "" $CHAT_USER
-#echo make sure $CHAT_USER exists
+#echo HERE: make sure $CHAT_USER exists
 #### end create local chat user ####
 
 ##TODO: In next section: instead of copy existing repo, clone from repo based on properties - this way we can use an existing repo
 
 #### create /opt repositories
 #sudo mkdir -p $WI_ROOT_DIR/$GH_PROJECT/
-##sudo cp -r $SC_SCRIPT_DIR/ $WI_ROOT_DIR/$GH_PROJECT/ #delme
 #sudo git clone $WI_URL $WI_ROOT_DIR/$GH_PROJECT/$GH_REPO
-##sudo rm -rf $WI_REPO_DIR/.git #delme
 ## create properties file:
 #for key in "${!SC_VARIABLES[@]}"; do
 #    echo "$key=\"${SC_VARIABLES[$key]}\"" | sudo tee -a $WI_REPO_DIR/config.properties
 #done
-#echo make sure $WI_SRC_DIR exists
-#echo make sure $WI_REPO_DIR/config.properties exists
+#echo HERE: make sure $WI_SRC_DIR exists
+#echo HERE: make sure $WI_REPO_DIR/config.properties exists
 #### end create /opt repositories
+
+#### copy over util directory ####
+#sudo cp -r $SC_SCRIPT_DIR/util $WI_REPO_DIR/
+#### end copy over util directory ####
 
 #### start aichat configure ####
 #sudo mkdir -p /home/$CHAT_USER/.config/aichat/roles/
-#sudo cp $SC_SCRIPT_DIR/util/config.yaml /home/$CHAT_USER/.config/aichat/.
+#sudo cp $WI_REPO_DIR/util/config.yaml /home/$CHAT_USER/.config/aichat/.
 #sudo ln -s $WI_SRC_DIR/$AI_ROLE_STARTER_MD /home/$CHAT_USER/.config/aichat/roles/$AI_ROLE_STARTER_MD
 #sudo chown -R $CHAT_USER:$CHAT_USER /home/$CHAT_USER/
-#echo manually add claude and openai keys to /home/$CHAT_USER/.config/aichat/config.yaml
 #echo run \`sudo -u $CHAT_USER aichat\` and send a test message to confirm all works as expected
 #echo run \`sudo -u $CHAT_USER aichat --role $AI_ROLE_STARTER\` and send a test message to confirm the role works as expected
 #### end aichat install ####
@@ -215,15 +196,14 @@ echo
 #make && sudo make install
 #### end ttyd installation ####
 
-####create variable above for ttyd service name
 #### start ttyd service ####
 #sudo sed -i "s|CHAT_USER|$CHAT_USER|g" $WI_REPO_DIR/util/ttyd.service
 #sudo sed -i "s|WI_REPO_DIR|$WI_REPO_DIR|g" $WI_REPO_DIR/util/ttyd.service
 #sudo sed -i "s|CHAT_USER|$CHAT_USER|g" $WI_REPO_DIR/util/ai-launcher.sh
 #sudo sed -i "s|AI_RAG_ALL|$AI_RAG_ALL|g" $WI_REPO_DIR/util/ai-launcher.sh
 #sudo sed -i "s|AI_ROLE_STARTER|$AI_ROLE_STARTER|g" $WI_REPO_DIR/util/ai-launcher.sh
-#sudo cp $SC_SCRIPT_DIR/util/ttyd.service $SC_SCRIPT_DIR/util/$WS_SERVICE_NAME.service
-#sudo mv $SC_SCRIPT_DIR/util/$WS_SERVICE_NAME.service /etc/systemd/system/$WS_SERVICE_NAME.service
+#sudo cp $WI_REPO_DIR/util/ttyd.service $WI_REPO_DIR/util/$WS_SERVICE_NAME.service
+#sudo mv $WI_REPO_DIR/util/$WS_SERVICE_NAME.service /etc/systemd/system/$WS_SERVICE_NAME.service
 #sudo systemctl daemon-reload
 #sudo systemctl enable $WS_SERVICE_NAME.service
 #sudo systemctl start $WS_SERVICE_NAME.service
@@ -232,9 +212,9 @@ echo
 
 #### config of nginx ####
 #sudo apt install nginx -y
-#echo WS_SERVICE_NAME=$WS_SERVICE_NAME
+#echo HERE: WS_SERVICE_NAME=$WS_SERVICE_NAME
 #sudo mkdir -p /var/www/$WS_SERVICE_NAME
-#sudo cp $SC_SCRIPT_DIR/util/404.html /var/www/.
+#sudo cp $WI_REPO_DIR/util/404.html /var/www/.
 #sudo chown -R www-data:www-data /var/www/
 #sudo chmod -R 755 /var/www/
 #### end config of nginx ####
@@ -242,8 +222,8 @@ echo
 #sudo sed -i "s|WS_SERVICE_NAME_TTYD|$WS_SERVICE_NAME_TTYD|g" $WI_REPO_DIR/util/nginx-config
 #sudo sed -i "s|WS_SERVICE_NAME|$WS_SERVICE_NAME|g" $WI_REPO_DIR/util/nginx-config
 #sudo sed -i "s|TTYD_PORT|$TTYD_PORT|g" $WI_REPO_DIR/util/nginx-config
-#sudo cp $SC_SCRIPT_DIR/util/nginx-config $SC_SCRIPT_DIR/util/$WS_SERVICE_NAME
-#sudo mv $SC_SCRIPT_DIR/util/$WS_SERVICE_NAME /etc/nginx/sites-available/$WS_SERVICE_NAME
+#sudo cp $WI_REPO_DIR/util/nginx-config $WI_REPO_DIR/util/$WS_SERVICE_NAME
+#sudo mv $WI_REPO_DIR/util/$WS_SERVICE_NAME /etc/nginx/sites-available/$WS_SERVICE_NAME
 #echo cat /etc/nginx/sites-available/$WS_SERVICE_NAME
 #sudo ln -s /etc/nginx/sites-available/$WS_SERVICE_NAME /etc/nginx/sites-enabled/
 #sudo rm -f /etc/nginx/sites-enabled/default
@@ -251,8 +231,8 @@ echo
 #### end config of nginx ####
 
 #### update book ####
-#sudo sed -i "s|GH_PROJECT|$GH_PROJECT|g" $WI_REPO_DIR/book.toml
-#sudo sed -i "s|GH_REPO|$GH_REPO|g" $WI_REPO_DIR/book.toml
+#sudo sed -i "s|GH_PROJECT|$GH_PROJECT|g" $WI_REPO_DIR/book.toml #used to set github vars
+#sudo sed -i "s|GH_REPO|$GH_REPO|g" $WI_REPO_DIR/book.toml #used to set github vars
 #sudo sed -i "s|MY_IP|$MY_IP|g" $WI_REPO_DIR/theme/head.hbs
 #sudo sed -i "s|WS_SERVICE_NAME_TTYD|$WS_SERVICE_NAME_TTYD|g" $WI_REPO_DIR/theme/head.hbs
 #### end update book ####
