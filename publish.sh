@@ -124,6 +124,7 @@ echo
 #exit
 #### end variables used by all parts of script ####
 
+######## PART ONE: Configuration ##########
 ####remove stuff during testing
 #sudo systemctl disable $WS_SERVICE_NAME.service
 #sudo systemctl stop $WS_SERVICE_NAME.service
@@ -251,6 +252,10 @@ echo
 #sudo chown -R www-data:www-data /var/www/$WS_SERVICE_NAME/
 #sudo rm -rf /var/www/$WS_SERVICE_NAME/.obsidian/
 #### end publish first version ####
+
+#### remove configuration section from publish.sh ####
+#sudo sed -i '/PART ONE/,/PART ONE/{//!d;}' $WI_REPO_DIR/publish.sh
+#### end remove configuration section from publish.sh ####
 
 #### Part 1 Summary
 #### build a local rag ####
