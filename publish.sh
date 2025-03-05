@@ -331,6 +331,7 @@ then
     
     # Find all individual messages.md files and cat them into the output file
     find /home/$CHAT_USER/.aichat-history/ -name "messages.md" -type f -exec cat {} >> "$OUTPUT_FILE" \;
+    chown $CHAT_USER:$CHAT_USER $OUTPUT_FILE
     
     # evaluate combined messages
     sudo -u $CHAT_USER /usr/local/bin/aichat --no-stream -f $WI_SRC_DIR/airole-message-review.md -f $OUTPUT_FILE
