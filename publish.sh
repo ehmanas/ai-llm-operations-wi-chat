@@ -259,7 +259,7 @@ then
     ### Part 1 Summary
     echo "STEP 1:"
     echo "add your openai and claude keys here: /home/$CHAT_USER/.config/aichat/config.yaml"
-    echo "   sudo vim /home/$CHAT_USER/.config/aichat/config.yaml"
+    echo " - sudo vim /home/$CHAT_USER/.config/aichat/config.yaml"
     echo
     echo "STEP 2: create your first rag (note: the script will keep this rag updated over time)"
     echo "sudo -u $CHAT_USER aichat"
