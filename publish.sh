@@ -144,7 +144,7 @@ echo
 if [[ $1 == "init" ]]
 then
     ####### PART ONE: Configuration ##########
-    
+
     ### Ensure proper Locale ####
     #locale - important for `mdbook build` step
     sudo locale-gen en_US.UTF-8
@@ -154,14 +154,14 @@ then
     export LANGUAGE=en_US
     export LC_ALL=en_US.UTF-8
     ### end ensure proper Locale ####
-    
+
     ### create local chat user ####
     sudo adduser --disabled-password --gecos "" $CHAT_USER
     echo HERE: make sure $CHAT_USER exists
     ### end create local chat user ####
-    
+
     #TODO: In next section: instead of copy existing repo, clone from repo based on properties - this way we can use an existing repo
-    
+
     ### create /opt repositories
     sudo mkdir -p $WI_ROOT_DIR/$GH_PROJECT/
     sudo git clone $WI_URL $WI_ROOT_DIR/$GH_PROJECT/$GH_REPO
@@ -172,12 +172,16 @@ then
     echo HERE: make sure $WI_SRC_DIR exists
     echo HERE: make sure $WI_REPO_DIR/config.properties exists
     ### end create /opt repositories
-    
+
     ### copy over util directory ####
     sudo cp -r $SC_SCRIPT_DIR/util $WI_REPO_DIR/
     sudo cp $SC_SCRIPT_DIR/publish.sh $WI_REPO_DIR/.
     ### end copy over util directory ####
-    
+
+    ### rename cron
+    sudo mv $WI_REPO_DIR/util/cron-file $WI_REPO_DIR/util/cron-$GH_PROJECT-$GH_REPO
+    ### end rename cron
+
     ### start aichat configure ####
     sudo mkdir -p /home/$CHAT_USER/.config/aichat/roles/
     sudo cp $WI_REPO_DIR/util/config.yaml /home/$CHAT_USER/.config/aichat/.
@@ -186,12 +190,12 @@ then
     echo run \`sudo -u $CHAT_USER aichat\` and send a test message to confirm all works as expected
     echo run \`sudo -u $CHAT_USER aichat --role $AI_ROLE_STARTER\` and send a test message to confirm the role works as expected
     ### end aichat install ####
-    
+
     ### create RAG ####
     # create a directory where we can ensure only the files we want ingested are present
     $WI_REPO_DIR/util/stage.sh
     ### end create RAG ####
-    
+
     ### start ttyd installation ####
     cd /tmp/
     sudo apt-get update
@@ -201,7 +205,7 @@ then
     cmake ..
     make && sudo make install
     ### end ttyd installation ####
-    
+
     ### start ttyd service ####
     sudo sed -i "s|CHAT_USER|$CHAT_USER|g" $WI_REPO_DIR/util/ttyd.service
     sudo sed -i "s|WI_REPO_DIR|$WI_REPO_DIR|g" $WI_REPO_DIR/util/ttyd.service
@@ -215,7 +219,7 @@ then
     sudo systemctl start $WS_SERVICE_NAME.service
     #sudo journalctl -u $WS_SERVICE_NAME.service #show logs for ttyd
     ### end ttyd service ####
-    
+
     ### config of nginx ####
     sudo apt install nginx -y
     echo HERE: WS_SERVICE_NAME=$WS_SERVICE_NAME
@@ -223,8 +227,7 @@ then
     sudo cp $WI_REPO_DIR/util/404.html /var/www/.
     sudo chown -R www-data:www-data /var/www/
     sudo chmod -R 755 /var/www/
-    ### end config of nginx ####
-    
+
     sudo sed -i "s|WS_SERVICE_NAME_TTYD|$WS_SERVICE_NAME_TTYD|g" $WI_REPO_DIR/util/nginx-config
     sudo sed -i "s|WS_SERVICE_NAME|$WS_SERVICE_NAME|g" $WI_REPO_DIR/util/nginx-config
     sudo sed -i "s|TTYD_PORT|$TTYD_PORT|g" $WI_REPO_DIR/util/nginx-config
@@ -283,10 +286,11 @@ then
     echo " - update $WI_REPO_DIR/publish.sh => comment out or delete Part One now that configuration is complete"
     echo " - update $WI_REPO_DIR/publish.sh => Part Two to perform periodic updates"
     echo " - set up a cron job to execute part two on a timer"
+    echo " - sudo cp $WI_REPO_DIR/util/cron-$GH_PROJECT-$GH_REPO /etc/cron.d/."
     ####### END PART ONE: Configuration ##########
 fi
 
-if [[ $1 == "" ]]
+if [[ $1 == "rebuild" ]]
 then
     ######## START PART TWO: PUBLISH ##########
     ##NOTE: the following is uncommented and added to a cron for periodic execution

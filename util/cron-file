@@ -1,0 +1,1 @@
+10 1 * * * root WI_REPO_DIR/publish.sh rebuild 2>&1 >> WI_REPO_DIR/.cron.log
