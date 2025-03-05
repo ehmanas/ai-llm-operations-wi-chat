@@ -8,6 +8,7 @@
 ##		bottom part is the script that runs evert time you publish ("rebuild")
 ##NOTE: this script configures nginx and mdbook with IP. You will need to update with url if needed (see theme/head.hbs)
 
+#### Here are the actions you need to either do or consider
 ##TODO: run https://github.com/chuboe/chuboe-system-configurator - installs prerequisite tools (like mdbook and aichat)
 ##TODO: ensure running from user with sudo priviledges - assumes this is your primary user
 ##TODO: add https cert in nginx
@@ -312,8 +313,8 @@ then
     echo "***starting publish***"
     echo "**********************"
     echo PUBLISH_DATE = $PUBLISH_DATE
-    cd $WI_REPO_DIR/
-    sudo $WI_REPO_DIR/util/summary.sh
+    cd $WI_REPO_DIR/ || graceful_exit "cannot cd to $WI_REPO_DIR"
+    sudo /util/summary.sh
     #git add .
     #git commit -m 'publisher commit summary'
     #git pull --rebase
