@@ -314,7 +314,7 @@ then
     echo "**********************"
     echo PUBLISH_DATE = $PUBLISH_DATE
     cd $WI_REPO_DIR/ || graceful_exit "cannot cd to $WI_REPO_DIR"
-    sudo /util/summary.sh
+    sudo util/summary.sh
     #git add .
     #git commit -m 'publisher commit summary'
     #git pull --rebase
