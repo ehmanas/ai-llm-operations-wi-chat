@@ -181,7 +181,7 @@ then
 
     ### rename cron
     sudo sed -i "s|WI_REPO_DIR|$WI_REPO_DIR|g" $WI_REPO_DIR/util/cron-file
-    sudo cp $WI_REPO_DIR/util/cron-file $WI_REPO_DIR/util/cron-$GH_PROJECT-$GH_REPO
+    sudo mv $WI_REPO_DIR/util/cron-file $WI_REPO_DIR/util/cron-$GH_PROJECT-$GH_REPO
     ### end rename cron
 
     ### start aichat configure ####
@@ -284,11 +284,13 @@ then
     echo "go to http://$MY_IP/$WS_SERVICE_NAME_TTYD/ for dedicated terminal"
     echo
     echo "STEP 4:"
-    echo "a copy of the publish.sh script was copied to $WI_REPO_DIR/"
-    echo " - update $WI_REPO_DIR/publish.sh => comment out or delete Part One now that configuration is complete"
-    echo " - update $WI_REPO_DIR/publish.sh => Part Two to perform periodic updates"
+    echo "all scripts are located in $WI_REPO_DIR/"
     echo " - set up a cron job to execute part two on a timer"
     echo " - sudo cp $WI_REPO_DIR/util/cron-$GH_PROJECT-$GH_REPO /etc/cron.d/."
+    echo
+    echo "STEP 5:"
+    echo "consider setting timezone"
+    echo " - sudo timedatectl set-timezone America/Chicago"
     ####### END PART ONE: Configuration ##########
 fi
 
