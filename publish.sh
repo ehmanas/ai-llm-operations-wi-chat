@@ -140,196 +140,204 @@ echo
 ##TODO: create section to check for conflicts to prevent from overwriting existing deployment
 ## Use previos delete as key
 
-######## PART ONE: Configuration ##########
 
-#### Ensure proper Locale ####
-##locale - important for `mdbook build` step
-#sudo locale-gen en_US.UTF-8
-#sudo update-locale LANG=en_US.UTF-8 LANGUAGE=en_US LC_ALL=en_US.UTF-8
-##note: the below statements should help prevent from needing to disconned before continuing
-#export LANG=en_US.UTF-8
-#export LANGUAGE=en_US
-#export LC_ALL=en_US.UTF-8
-#### end ensure proper Locale ####
+if [[ $1 == "init" ]]
+then
+    ####### PART ONE: Configuration ##########
+    
+    ### Ensure proper Locale ####
+    #locale - important for `mdbook build` step
+    sudo locale-gen en_US.UTF-8
+    sudo update-locale LANG=en_US.UTF-8 LANGUAGE=en_US LC_ALL=en_US.UTF-8
+    #note: the below statements should help prevent from needing to disconned before continuing
+    export LANG=en_US.UTF-8
+    export LANGUAGE=en_US
+    export LC_ALL=en_US.UTF-8
+    ### end ensure proper Locale ####
+    
+    ### create local chat user ####
+    sudo adduser --disabled-password --gecos "" $CHAT_USER
+    echo HERE: make sure $CHAT_USER exists
+    ### end create local chat user ####
+    
+    #TODO: In next section: instead of copy existing repo, clone from repo based on properties - this way we can use an existing repo
+    
+    ### create /opt repositories
+    sudo mkdir -p $WI_ROOT_DIR/$GH_PROJECT/
+    sudo git clone $WI_URL $WI_ROOT_DIR/$GH_PROJECT/$GH_REPO
+    # create properties file:
+    for key in "${!SC_VARIABLES[@]}"; do
+        echo "$key=\"${SC_VARIABLES[$key]}\"" | sudo tee -a $WI_REPO_DIR/config.properties
+    done
+    echo HERE: make sure $WI_SRC_DIR exists
+    echo HERE: make sure $WI_REPO_DIR/config.properties exists
+    ### end create /opt repositories
+    
+    ### copy over util directory ####
+    sudo cp -r $SC_SCRIPT_DIR/util $WI_REPO_DIR/
+    sudo cp $SC_SCRIPT_DIR/publish.sh $WI_REPO_DIR/.
+    ### end copy over util directory ####
+    
+    ### start aichat configure ####
+    sudo mkdir -p /home/$CHAT_USER/.config/aichat/roles/
+    sudo cp $WI_REPO_DIR/util/config.yaml /home/$CHAT_USER/.config/aichat/.
+    sudo ln -s $WI_SRC_DIR/$AI_ROLE_STARTER_MD /home/$CHAT_USER/.config/aichat/roles/$AI_ROLE_STARTER_MD
+    sudo chown -R $CHAT_USER:$CHAT_USER /home/$CHAT_USER/
+    echo run \`sudo -u $CHAT_USER aichat\` and send a test message to confirm all works as expected
+    echo run \`sudo -u $CHAT_USER aichat --role $AI_ROLE_STARTER\` and send a test message to confirm the role works as expected
+    ### end aichat install ####
+    
+    ### create RAG ####
+    # create a directory where we can ensure only the files we want ingested are present
+    $WI_REPO_DIR/util/stage.sh
+    ### end create RAG ####
+    
+    ### start ttyd installation ####
+    cd /tmp/
+    sudo apt-get update
+    sudo apt-get install -y build-essential cmake git libjson-c-dev libwebsockets-dev
+    git clone https://github.com/tsl0922/ttyd.git
+    cd ttyd && mkdir build && cd build
+    cmake ..
+    make && sudo make install
+    ### end ttyd installation ####
+    
+    ### start ttyd service ####
+    sudo sed -i "s|CHAT_USER|$CHAT_USER|g" $WI_REPO_DIR/util/ttyd.service
+    sudo sed -i "s|WI_REPO_DIR|$WI_REPO_DIR|g" $WI_REPO_DIR/util/ttyd.service
+    sudo sed -i "s|CHAT_USER|$CHAT_USER|g" $WI_REPO_DIR/util/ai-launcher.sh
+    sudo sed -i "s|AI_RAG_ALL|$AI_RAG_ALL|g" $WI_REPO_DIR/util/ai-launcher.sh
+    sudo sed -i "s|AI_ROLE_STARTER|$AI_ROLE_STARTER|g" $WI_REPO_DIR/util/ai-launcher.sh
+    sudo cp $WI_REPO_DIR/util/ttyd.service $WI_REPO_DIR/util/$WS_SERVICE_NAME.service
+    sudo mv $WI_REPO_DIR/util/$WS_SERVICE_NAME.service /etc/systemd/system/$WS_SERVICE_NAME.service
+    sudo systemctl daemon-reload
+    sudo systemctl enable $WS_SERVICE_NAME.service
+    sudo systemctl start $WS_SERVICE_NAME.service
+    #sudo journalctl -u $WS_SERVICE_NAME.service #show logs for ttyd
+    ### end ttyd service ####
+    
+    ### config of nginx ####
+    sudo apt install nginx -y
+    echo HERE: WS_SERVICE_NAME=$WS_SERVICE_NAME
+    sudo mkdir -p /var/www/$WS_SERVICE_NAME
+    sudo cp $WI_REPO_DIR/util/404.html /var/www/.
+    sudo chown -R www-data:www-data /var/www/
+    sudo chmod -R 755 /var/www/
+    ### end config of nginx ####
+    
+    sudo sed -i "s|WS_SERVICE_NAME_TTYD|$WS_SERVICE_NAME_TTYD|g" $WI_REPO_DIR/util/nginx-config
+    sudo sed -i "s|WS_SERVICE_NAME|$WS_SERVICE_NAME|g" $WI_REPO_DIR/util/nginx-config
+    sudo sed -i "s|TTYD_PORT|$TTYD_PORT|g" $WI_REPO_DIR/util/nginx-config
+    sudo cp $WI_REPO_DIR/util/nginx-config $WI_REPO_DIR/util/$WS_SERVICE_NAME
+    sudo mv $WI_REPO_DIR/util/$WS_SERVICE_NAME /etc/nginx/sites-available/$WS_SERVICE_NAME
+    echo cat /etc/nginx/sites-available/$WS_SERVICE_NAME
+    sudo ln -s /etc/nginx/sites-available/$WS_SERVICE_NAME /etc/nginx/sites-enabled/
+    sudo rm -f /etc/nginx/sites-enabled/default
+    sudo systemctl restart nginx
+    ### end config of nginx ####
+    
+    ### update book ####
+    sudo sed -i "s|GH_PROJECT|$GH_PROJECT|g" $WI_REPO_DIR/book.toml #used to set github vars
+    sudo sed -i "s|GH_REPO|$GH_REPO|g" $WI_REPO_DIR/book.toml #used to set github vars
+    sudo sed -i "s|MY_IP|$MY_IP|g" $WI_REPO_DIR/theme/head.hbs
+    sudo sed -i "s|WS_SERVICE_NAME_TTYD|$WS_SERVICE_NAME_TTYD|g" $WI_REPO_DIR/theme/head.hbs
+    ### end update book ####
+    
+    ### publish first version ####
+    PUBLISH_DATE=`date +%Y%m%d`-`date +%H%M%S`
+    echo "**********************"
+    echo "***first publish***"
+    echo "**********************"
+    echo PUBLISH_DATE = $PUBLISH_DATE
+    cd $WI_REPO_DIR/
+    sudo $WI_REPO_DIR/util/summary.sh
+    sudo /usr/local/bin/mdbook build
+    sudo rsync -a --delete wi/ /var/www/$WS_SERVICE_NAME/
+    sudo chown -R www-data:www-data /var/www/$WS_SERVICE_NAME/
+    sudo rm -rf /var/www/$WS_SERVICE_NAME/.obsidian/
+    ### end publish first version ####
+    
+    ### Part 1 Summary
+    ### build a local rag ####
+    echo
+    echo "STEP 1:"
+    echo "add your openai and claude keys here: /home/$CHAT_USER/.config/aichat/config.yaml"
+    echo "   sudo vim /home/$CHAT_USER/.config/aichat/config.yaml"
+    echo
+    echo "STEP 2: create your first rag (note: the script will keep this rag updated over time)"
+    echo "sudo -u $CHAT_USER aichat"
+    echo "> .rag $AI_RAG_ALL"
+    echo "> large embedding (default)"
+    echo "> 2000 chunk (default)"
+    echo "> 100 overlap (default)"
+    echo "> $WI_REPO_DIR/rag-stage/**/*.md"
+    ### end build a local rag ####
+    echo
+    echo "STEP 3:"
+    echo "go to http://$MY_IP/$WS_SERVICE_NAME/chat.html for documents"
+    echo "expand the chat section to see the chat dialog."
+    echo "go to http://$MY_IP/$WS_SERVICE_NAME_TTYD/ for dedicated terminal"
+    echo
+    echo "STEP 4:"
+    echo "a copy of the publish.sh script was copied to $WI_REPO_DIR/"
+    echo " - update $WI_REPO_DIR/publish.sh => comment out or delete Part One now that configuration is complete"
+    echo " - update $WI_REPO_DIR/publish.sh => Part Two to perform periodic updates"
+    echo " - set up a cron job to execute part two on a timer"
+    ####### END PART ONE: Configuration ##########
+fi
 
-#### create local chat user ####
-#sudo adduser --disabled-password --gecos "" $CHAT_USER
-#echo HERE: make sure $CHAT_USER exists
-#### end create local chat user ####
-
-##TODO: In next section: instead of copy existing repo, clone from repo based on properties - this way we can use an existing repo
-
-#### create /opt repositories
-#sudo mkdir -p $WI_ROOT_DIR/$GH_PROJECT/
-#sudo git clone $WI_URL $WI_ROOT_DIR/$GH_PROJECT/$GH_REPO
-## create properties file:
-#for key in "${!SC_VARIABLES[@]}"; do
-#    echo "$key=\"${SC_VARIABLES[$key]}\"" | sudo tee -a $WI_REPO_DIR/config.properties
-#done
-#echo HERE: make sure $WI_SRC_DIR exists
-#echo HERE: make sure $WI_REPO_DIR/config.properties exists
-#### end create /opt repositories
-
-#### copy over util directory ####
-#sudo cp -r $SC_SCRIPT_DIR/util $WI_REPO_DIR/
-#sudo cp $SC_SCRIPT_DIR/publish.sh $WI_REPO_DIR/.
-#### end copy over util directory ####
-
-#### start aichat configure ####
-#sudo mkdir -p /home/$CHAT_USER/.config/aichat/roles/
-#sudo cp $WI_REPO_DIR/util/config.yaml /home/$CHAT_USER/.config/aichat/.
-#sudo ln -s $WI_SRC_DIR/$AI_ROLE_STARTER_MD /home/$CHAT_USER/.config/aichat/roles/$AI_ROLE_STARTER_MD
-#sudo chown -R $CHAT_USER:$CHAT_USER /home/$CHAT_USER/
-#echo run \`sudo -u $CHAT_USER aichat\` and send a test message to confirm all works as expected
-#echo run \`sudo -u $CHAT_USER aichat --role $AI_ROLE_STARTER\` and send a test message to confirm the role works as expected
-#### end aichat install ####
-
-#### create RAG ####
-## create a directory where we can ensure only the files we want ingested are present
-#$WI_REPO_DIR/util/stage.sh
-#### end create RAG ####
-
-#### start ttyd installation ####
-#cd /tmp/
-#sudo apt-get update
-#sudo apt-get install -y build-essential cmake git libjson-c-dev libwebsockets-dev
-#git clone https://github.com/tsl0922/ttyd.git
-#cd ttyd && mkdir build && cd build
-#cmake ..
-#make && sudo make install
-#### end ttyd installation ####
-
-#### start ttyd service ####
-#sudo sed -i "s|CHAT_USER|$CHAT_USER|g" $WI_REPO_DIR/util/ttyd.service
-#sudo sed -i "s|WI_REPO_DIR|$WI_REPO_DIR|g" $WI_REPO_DIR/util/ttyd.service
-#sudo sed -i "s|CHAT_USER|$CHAT_USER|g" $WI_REPO_DIR/util/ai-launcher.sh
-#sudo sed -i "s|AI_RAG_ALL|$AI_RAG_ALL|g" $WI_REPO_DIR/util/ai-launcher.sh
-#sudo sed -i "s|AI_ROLE_STARTER|$AI_ROLE_STARTER|g" $WI_REPO_DIR/util/ai-launcher.sh
-#sudo cp $WI_REPO_DIR/util/ttyd.service $WI_REPO_DIR/util/$WS_SERVICE_NAME.service
-#sudo mv $WI_REPO_DIR/util/$WS_SERVICE_NAME.service /etc/systemd/system/$WS_SERVICE_NAME.service
-#sudo systemctl daemon-reload
-#sudo systemctl enable $WS_SERVICE_NAME.service
-#sudo systemctl start $WS_SERVICE_NAME.service
-##sudo journalctl -u $WS_SERVICE_NAME.service #show logs for ttyd
-#### end ttyd service ####
-
-#### config of nginx ####
-#sudo apt install nginx -y
-#echo HERE: WS_SERVICE_NAME=$WS_SERVICE_NAME
-#sudo mkdir -p /var/www/$WS_SERVICE_NAME
-#sudo cp $WI_REPO_DIR/util/404.html /var/www/.
-#sudo chown -R www-data:www-data /var/www/
-#sudo chmod -R 755 /var/www/
-#### end config of nginx ####
-
-#sudo sed -i "s|WS_SERVICE_NAME_TTYD|$WS_SERVICE_NAME_TTYD|g" $WI_REPO_DIR/util/nginx-config
-#sudo sed -i "s|WS_SERVICE_NAME|$WS_SERVICE_NAME|g" $WI_REPO_DIR/util/nginx-config
-#sudo sed -i "s|TTYD_PORT|$TTYD_PORT|g" $WI_REPO_DIR/util/nginx-config
-#sudo cp $WI_REPO_DIR/util/nginx-config $WI_REPO_DIR/util/$WS_SERVICE_NAME
-#sudo mv $WI_REPO_DIR/util/$WS_SERVICE_NAME /etc/nginx/sites-available/$WS_SERVICE_NAME
-#echo cat /etc/nginx/sites-available/$WS_SERVICE_NAME
-#sudo ln -s /etc/nginx/sites-available/$WS_SERVICE_NAME /etc/nginx/sites-enabled/
-#sudo rm -f /etc/nginx/sites-enabled/default
-#sudo systemctl restart nginx
-#### end config of nginx ####
-
-#### update book ####
-#sudo sed -i "s|GH_PROJECT|$GH_PROJECT|g" $WI_REPO_DIR/book.toml #used to set github vars
-#sudo sed -i "s|GH_REPO|$GH_REPO|g" $WI_REPO_DIR/book.toml #used to set github vars
-#sudo sed -i "s|MY_IP|$MY_IP|g" $WI_REPO_DIR/theme/head.hbs
-#sudo sed -i "s|WS_SERVICE_NAME_TTYD|$WS_SERVICE_NAME_TTYD|g" $WI_REPO_DIR/theme/head.hbs
-#### end update book ####
-
-#### publish first version ####
-#PUBLISH_DATE=`date +%Y%m%d`-`date +%H%M%S`
-#echo "**********************"
-#echo "***first publish***"
-#echo "**********************"
-#echo PUBLISH_DATE = $PUBLISH_DATE
-#cd $WI_REPO_DIR/
-#sudo $WI_REPO_DIR/util/summary.sh
-#sudo /usr/local/bin/mdbook build
-#sudo rsync -a --delete wi/ /var/www/$WS_SERVICE_NAME/
-#sudo chown -R www-data:www-data /var/www/$WS_SERVICE_NAME/
-#sudo rm -rf /var/www/$WS_SERVICE_NAME/.obsidian/
-#### end publish first version ####
-
-#### Part 1 Summary
-#### build a local rag ####
-#echo
-#echo "STEP 1:"
-#echo "add your openai and claude keys here: /home/$CHAT_USER/.config/aichat/config.yaml"
-#echo "   sudo vim /home/$CHAT_USER/.config/aichat/config.yaml"
-#echo
-#echo "STEP 2: create your first rag (note: the script will keep this rag updated over time)"
-#echo "sudo -u $CHAT_USER aichat"
-#echo "> .rag $AI_RAG_ALL"
-#echo "> large embedding (default)"
-#echo "> 2000 chunk (default)"
-#echo "> 100 overlap (default)"
-#echo "> $WI_REPO_DIR/rag-stage/**/*.md"
-#### end build a local rag ####
-#echo
-#echo "STEP 3:"
-#echo "go to http://$MY_IP/$WS_SERVICE_NAME/chat.html for documents"
-#echo "expand the chat section to see the chat dialog."
-#echo "go to http://$MY_IP/$WS_SERVICE_NAME_TTYD/ for dedicated terminal"
-#echo
-#echo "STEP 4:"
-#echo "a copy of the publish.sh script was copied to $WI_REPO_DIR/"
-#echo " - update $WI_REPO_DIR/publish.sh => comment out or delete Part One now that configuration is complete"
-#echo " - update $WI_REPO_DIR/publish.sh => Part Two to perform periodic updates"
-#echo " - set up a cron job to execute part two on a timer"
-######## END PART ONE: Configuration ##########
-
-######### START PART TWO: PUBLISH ##########
-###NOTE: the following is uncommented and added to a cron for periodic execution
-#
-#PUBLISH_DATE=`date +%Y%m%d`-`date +%H%M%S`
-#echo "**********************"
-#echo "***starting publish***"
-#echo "**********************"
-#echo PUBLISH_DATE = $PUBLISH_DATE
-#cd $WI_REPO_DIR/
-#sudo $WI_REPO_DIR/util/summary.sh
-##git add .
-##git commit -m 'publisher commit summary'
-##git pull --rebase
-#sudo /usr/local/bin/mdbook build
-#sudo rsync -a --delete wi/ /var/www/$WS_SERVICE_NAME/
-#sudo chown -R www-data:www-data /var/www/$WS_SERVICE_NAME/
-#sudo rm -rf /var/www/$WS_SERVICE_NAME/.obsidian/
-##sudo systemctl restart ttyd
-##sudo systemctl restart nginx
-#
-## Create or clear the output file - prepare to cat all individual chat result directories
-#OUTPUT_FILE=/home/$CHAT_USER/.config/aichat/messages.md
-#sudo rm -f $OUTPUT_FILE
-#
-## Find all individual messages.md files and cat them into the output file
-#sudo find /home/$CHAT_USER/.aichat-history/ -name "messages.md" -type f -exec cat {} | sudo -u $CHAT_USER tee -a "$OUTPUT_FILE" \;
-#
-## evaluate combined messages
-#sudo -u $CHAT_USER /usr/local/bin/aichat --no-stream -f $WI_SRC_DIR/airole-message-review.md -f $OUTPUT_FILE
-#
-## rebuild the rag with current files
-#sudo $WI_REPO_DIR/util/stage.sh
-#sudo -u $CHAT_USER /usr/local/bin/aichat --rag $AI_RAG_ALL --rebuild-rag
-#
-## move messages to chat history
-#sudo mv $OUTPUT_FILE $WI_SRC_DIR/prompt-history/messages-$PUBLISH_DATE.md
-#
-## git it
-##git add .
-##git commit -m 'publisher commit prompt history'
-##git pull --rebase
-##git push
-#
-## cleanup history
-#sudo rm -rf /home/$CHAT_USER/.aichat-history/*
-#
-#echo "**********************"
-#echo "***ending publish***"
-#echo "**********************"
-#
-######### END PART TWO: PUBLISH ##########
+if [[ $1 == "" ]]
+then
+    ######## START PART TWO: PUBLISH ##########
+    ##NOTE: the following is uncommented and added to a cron for periodic execution
+    
+    PUBLISH_DATE=`date +%Y%m%d`-`date +%H%M%S`
+    echo "**********************"
+    echo "***starting publish***"
+    echo "**********************"
+    echo PUBLISH_DATE = $PUBLISH_DATE
+    cd $WI_REPO_DIR/
+    sudo $WI_REPO_DIR/util/summary.sh
+    #git add .
+    #git commit -m 'publisher commit summary'
+    #git pull --rebase
+    sudo /usr/local/bin/mdbook build
+    sudo rsync -a --delete wi/ /var/www/$WS_SERVICE_NAME/
+    sudo chown -R www-data:www-data /var/www/$WS_SERVICE_NAME/
+    sudo rm -rf /var/www/$WS_SERVICE_NAME/.obsidian/
+    #sudo systemctl restart ttyd
+    #sudo systemctl restart nginx
+    
+    # Create or clear the output file - prepare to cat all individual chat result directories
+    OUTPUT_FILE=/home/$CHAT_USER/.config/aichat/messages.md
+    sudo rm -f $OUTPUT_FILE
+    
+    # Find all individual messages.md files and cat them into the output file
+    sudo find /home/$CHAT_USER/.aichat-history/ -name "messages.md" -type f -exec cat {} | sudo -u $CHAT_USER tee -a "$OUTPUT_FILE" \;
+    
+    # evaluate combined messages
+    sudo -u $CHAT_USER /usr/local/bin/aichat --no-stream -f $WI_SRC_DIR/airole-message-review.md -f $OUTPUT_FILE
+    
+    # rebuild the rag with current files
+    sudo $WI_REPO_DIR/util/stage.sh
+    sudo -u $CHAT_USER /usr/local/bin/aichat --rag $AI_RAG_ALL --rebuild-rag
+    
+    # move messages to chat history
+    sudo mkdir -p $WI_SRC_DIR/prompt-history/
+    sudo mv $OUTPUT_FILE $WI_SRC_DIR/prompt-history/messages-$PUBLISH_DATE.md
+    
+    # git it
+    #git add .
+    #git commit -m 'publisher commit prompt history'
+    #git pull --rebase
+    #git push
+    
+    # cleanup history
+    sudo rm -rf /home/$CHAT_USER/.aichat-history/*
+    
+    echo "**********************"
+    echo "***ending publish***"
+    echo "**********************"
+    
+    ######## END PART TWO: PUBLISH ##########
+fi
