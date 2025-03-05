@@ -135,6 +135,7 @@ echo
 #sudo rm -rf /opt/work-instruction/
 #sudo deluser cathy; sudo rm -rf /home/cathy/
 #sudo rm -rf /tmp/ttyd/
+#sudo rm /etc/cron.d/cron*
 #git reset --hard; git pull
 
 ##TODO: create section to check for conflicts to prevent from overwriting existing deployment
@@ -179,7 +180,8 @@ then
     ### end copy over util directory ####
 
     ### rename cron
-    sudo mv $WI_REPO_DIR/util/cron-file $WI_REPO_DIR/util/cron-$GH_PROJECT-$GH_REPO
+    sudo sed -i "s|WI_REPO_DIR|$WI_REPO_DIR|g" $WI_REPO_DIR/util/cron-file
+    sudo cp $WI_REPO_DIR/util/cron-file $WI_REPO_DIR/util/cron-$GH_PROJECT-$GH_REPO
     ### end rename cron
 
     ### start aichat configure ####
