@@ -306,7 +306,7 @@ fi
 if [[ $1 == "rebuild" ]]
 then
     ######## START PART TWO: PUBLISH ##########
-    ##NOTE: the following is uncommented and added to a cron for periodic execution
+    ##NOTE: this section is assumed to be executed as root
     
     PUBLISH_DATE=`date +%Y%m%d`-`date +%H%M%S`
     echo "**********************"
@@ -314,34 +314,34 @@ then
     echo "**********************"
     echo PUBLISH_DATE = $PUBLISH_DATE
     cd $WI_REPO_DIR/ || graceful_exit "cannot cd to $WI_REPO_DIR"
-    sudo util/summary.sh
+    util/summary.sh
     #git add .
     #git commit -m 'publisher commit summary'
     #git pull --rebase
-    sudo /usr/local/bin/mdbook build
-    sudo rsync -a --delete wi/ /var/www/$WS_SERVICE_NAME/
-    sudo chown -R www-data:www-data /var/www/$WS_SERVICE_NAME/
-    sudo rm -rf /var/www/$WS_SERVICE_NAME/.obsidian/
-    #sudo systemctl restart ttyd
-    #sudo systemctl restart nginx
+    /usr/local/bin/mdbook build
+    rsync -a --delete wi/ /var/www/$WS_SERVICE_NAME/
+    chown -R www-data:www-data /var/www/$WS_SERVICE_NAME/
+    rm -rf /var/www/$WS_SERVICE_NAME/.obsidian/
+    #systemctl restart ttyd
+    #systemctl restart nginx
     
     # Create or clear the output file - prepare to cat all individual chat result directories
     OUTPUT_FILE=/home/$CHAT_USER/.config/aichat/messages.md
-    sudo rm -f $OUTPUT_FILE
+    rm -f $OUTPUT_FILE
     
     # Find all individual messages.md files and cat them into the output file
-    sudo find /home/$CHAT_USER/.aichat-history/ -name "messages.md" -type f -exec cat {} | sudo -u $CHAT_USER tee -a "$OUTPUT_FILE" \;
+    find /home/$CHAT_USER/.aichat-history/ -name "messages.md" -type f -exec cat {} >> "$OUTPUT_FILE" \;
     
     # evaluate combined messages
     sudo -u $CHAT_USER /usr/local/bin/aichat --no-stream -f $WI_SRC_DIR/airole-message-review.md -f $OUTPUT_FILE
     
     # rebuild the rag with current files
-    sudo $WI_REPO_DIR/util/stage.sh
+    $WI_REPO_DIR/util/stage.sh
     sudo -u $CHAT_USER /usr/local/bin/aichat --rag $AI_RAG_ALL --rebuild-rag
     
     # move messages to chat history
-    sudo mkdir -p $WI_SRC_DIR/prompt-history/
-    sudo mv $OUTPUT_FILE $WI_SRC_DIR/prompt-history/messages-$PUBLISH_DATE.md
+    mkdir -p $WI_SRC_DIR/prompt-history/
+    mv $OUTPUT_FILE $WI_SRC_DIR/prompt-history/messages-$PUBLISH_DATE.md
     
     # git it
     #git add .
@@ -350,7 +350,7 @@ then
     #git push
     
     # cleanup history
-    sudo rm -rf /home/$CHAT_USER/.aichat-history/*
+    rm -rf /home/$CHAT_USER/.aichat-history/*
     
     echo "**********************"
     echo "***ending publish***"
