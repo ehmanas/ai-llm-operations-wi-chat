@@ -217,6 +217,23 @@ then
     #sudo journalctl -u $WS_SERVICE_NAME.service #show logs for ttyd
     ### end ttyd service ####
 
+    ### create self-signed cert ###
+    #Update the below as you deem appropriate
+    country="XX"
+    state="XX"
+    locality="XX"
+    organization="chuck-stack"
+    organizationalunit="trainig"
+    commonname="XX"
+    email="XX"
+    
+    #Creates a cert that is valid for 10 years
+    sudo openssl req -x509 -nodes -days 3650 -newkey rsa:2048 \
+    -subj "/C=$country/ST=$state/L=$locality/O=$organization/OU=$organizationalunit/CN=$commonname/emailAddress=$email" \
+    -keyout /etc/ssl/private/nginx-selfsigned.key \
+    -out /etc/ssl/certs/nginx-selfsigned.crt
+    ### end  create self-signed cert ###
+
     ### config of nginx ####
     sudo apt install nginx -y
     echo HERE: WS_SERVICE_NAME=$WS_SERVICE_NAME
