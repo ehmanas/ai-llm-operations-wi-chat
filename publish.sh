@@ -4,26 +4,23 @@
 ##NOTE: this script assumes debain 12 or ubuntu 24.04
 ##NOTE: this would normally be deployed in a nixos environment; however, creating a generic script is more accessible to most Linux users
 ##NOTE: this script has two parts: 
-##		top part helps configure a server
-##		bottom part is the script that runs evert time you publish
-##NOTE: the top part is not really a script. It is designed to guide you. You can uncomment a section at a time to review and execute to configure your system.
+##		top part helps configure a server ("init")
+##		bottom part is the script that runs evert time you publish ("rebuild")
+##NOTE: this script configures nginx and mdbook with IP. You will need to update with url if needed (see theme/head.hbs)
 
 ##TODO: run https://github.com/chuboe/chuboe-system-configurator - installs prerequisite tools (like mdbook and aichat)
 ##TODO: ensure running from user with sudo priviledges - assumes this is your primary user
-##TODO: create a url for this server and update theme/head.hbs accordingly
 ##TODO: add https cert in nginx
-##TODO: need openai and claude api tokens for aichat (open ai for embedding/rag and claude for general questions)
-##TODO: script depends on a local user (rags, services, etc...) - if the desired user does not exist, simply create it with sudo capabilities
-##TODO: update the below variables labeled with ###change-me###
+##TODO: update the below variables labeled with ###change-me###. Note: will run as is if testing
 
-#### Repository Notes ####
+#### More Repository Notes ####
 # The script assumes there are multiple repositories (or at least accounts for this scenario)
 # each repository:
 #	is a book or collection of knowledge (has src directory)
 #	has its own book.toml
 #		note that we can put [chuckstack] variables in the book.toml without conflict
 #	can have multiple aichat airole files/ttyd (csr, mgr, etc...)
-#### end Repository Notes ####
+#### end More Repository Notes ####
 
 function graceful_exit
 {
@@ -120,8 +117,6 @@ for key in "${!SC_VARIABLES[@]}"; do
     echo "$key=\"${SC_VARIABLES[$key]}\""
 done
 echo
-
-#exit
 #### end variables used by all parts of script ####
 
 ####remove stuff during testing
@@ -229,7 +224,6 @@ then
     sudo cp $WI_REPO_DIR/util/404.html /var/www/.
     sudo chown -R www-data:www-data /var/www/
     sudo chmod -R 755 /var/www/
-
     sudo sed -i "s|WS_SERVICE_NAME_TTYD|$WS_SERVICE_NAME_TTYD|g" $WI_REPO_DIR/util/nginx-config
     sudo sed -i "s|WS_SERVICE_NAME|$WS_SERVICE_NAME|g" $WI_REPO_DIR/util/nginx-config
     sudo sed -i "s|TTYD_PORT|$TTYD_PORT|g" $WI_REPO_DIR/util/nginx-config
@@ -263,8 +257,6 @@ then
     ### end publish first version ####
     
     ### Part 1 Summary
-    ### build a local rag ####
-    echo
     echo "STEP 1:"
     echo "add your openai and claude keys here: /home/$CHAT_USER/.config/aichat/config.yaml"
     echo "   sudo vim /home/$CHAT_USER/.config/aichat/config.yaml"
@@ -276,7 +268,6 @@ then
     echo "> 2000 chunk (default)"
     echo "> 100 overlap (default)"
     echo "> $WI_REPO_DIR/rag-stage/**/*.md"
-    ### end build a local rag ####
     echo
     echo "STEP 3:"
     echo "go to http://$MY_IP/$WS_SERVICE_NAME/chat.html for documents"
