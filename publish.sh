@@ -92,6 +92,7 @@ SC_VARIABLES[WI_SRC_DIR]=$WI_SRC_DIR
 AI_ROLE_STARTER=airole-starter
 echo AI_ROLE_STARTER=$AI_ROLE_STARTER
 # AI role that tells your LLM how to answer questions
+# TODO: make this an array of all AI_ROLEs (not just one)
 AI_ROLE_STARTER_MD=$AI_ROLE_STARTER.md
 echo AI_ROLE_STARTER_MD=$AI_ROLE_STARTER_MD
 # AI RAG Name for where all documents are maintained
@@ -296,10 +297,14 @@ then
     echo "all scripts are located in $WI_REPO_DIR/"
     echo " - set up a cron job to execute part two on a timer"
     echo " - sudo cp $WI_REPO_DIR/util/cron-$GH_PROJECT-$GH_REPO /etc/cron.d/."
+    echo " - This is a git repository owned by root"
+    echo " - Update it accordingly"
+    echo " - Join the stack-academy if you want help pushing it back so others can see the feedback"
     echo
     echo "STEP 5:"
     echo "consider setting timezone"
     echo " - sudo timedatectl set-timezone America/Chicago"
+    echo
     ####### END PART ONE: Configuration ##########
 fi
 
@@ -314,10 +319,11 @@ then
     echo "**********************"
     echo PUBLISH_DATE = $PUBLISH_DATE
     cd $WI_REPO_DIR/ || graceful_exit "cannot cd to $WI_REPO_DIR"
-    util/summary.sh
+    ##pull latest changes
     #git add .
     #git commit -m 'publisher commit summary'
     #git pull --rebase
+    util/summary.sh
     /usr/local/bin/mdbook build
     rsync -a --delete wi/ /var/www/$WS_SERVICE_NAME/
     chown -R www-data:www-data /var/www/$WS_SERVICE_NAME/
@@ -336,15 +342,15 @@ then
     # evaluate combined messages
     sudo -u $CHAT_USER /usr/local/bin/aichat --no-stream -f $WI_SRC_DIR/airole-message-review.md -f $OUTPUT_FILE
     
-    # rebuild the rag with current files
+    # Now that the analysis is complete, rebuild the rag with updated files
     $WI_REPO_DIR/util/stage.sh
     sudo -u $CHAT_USER /usr/local/bin/aichat --rag $AI_RAG_ALL --rebuild-rag
     
-    # move messages to chat history
+    # move messages and evaluation to prompt history so that content creators can evaluate
     mkdir -p $WI_SRC_DIR/prompt-history/
     mv $OUTPUT_FILE $WI_SRC_DIR/prompt-history/messages-$PUBLISH_DATE.md
     
-    # git it
+    ##push latest results
     #git add .
     #git commit -m 'publisher commit prompt history'
     #git pull --rebase
