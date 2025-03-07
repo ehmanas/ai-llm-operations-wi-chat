@@ -1,0 +1,10 @@
+# see https://github.com/sigoden/aichat/blob/main/config.example.yaml
+
+model: openai
+compress_threshold: 140000
+save: true
+save_session: true
+clients:
+- type: openai
+  api_key: #add key here
+rag_top_k: 5

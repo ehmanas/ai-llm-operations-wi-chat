@@ -88,6 +88,8 @@ SC_VARIABLES[WI_SRC]=$WI_SRC
 WI_SRC_DIR=$WI_REPO_DIR/$WI_SRC
 echo WI_SRC_DIR=$WI_SRC_DIR
 SC_VARIABLES[WI_SRC_DIR]=$WI_SRC_DIR
+# AI config to use (options: config-openai.yaml or config-claude.yaml) ###change-me###
+AI_CONFIG=config-openai.yaml
 # AI role that tells your LLM how to answer questions
 AI_ROLE_STARTER=airole-starter
 echo AI_ROLE_STARTER=$AI_ROLE_STARTER
@@ -183,7 +185,7 @@ then
 
     ### start aichat configure ####
     sudo mkdir -p /home/$CHAT_USER/.config/aichat/roles/
-    sudo cp $WI_REPO_DIR/util/config.yaml /home/$CHAT_USER/.config/aichat/.
+    sudo cp $WI_REPO_DIR/util/$AI_CONFIG /home/$CHAT_USER/.config/aichat/config.yaml
     sudo ln -s $WI_SRC_DIR/$AI_ROLE_STARTER_MD /home/$CHAT_USER/.config/aichat/roles/$AI_ROLE_STARTER_MD
     sudo chown -R $CHAT_USER:$CHAT_USER /home/$CHAT_USER/
     echo run \`sudo -u $CHAT_USER aichat\` and send a test message to confirm all works as expected
