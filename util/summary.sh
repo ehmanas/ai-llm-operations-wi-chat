@@ -8,6 +8,11 @@ function graceful_exit
       exit 1
 }
 
+# Capitalize first letter of each word and replace dashes with spaces
+function format_link_text() {
+    echo "$1" | sed 's/-/ /g' | sed 's/\b\(.\)/\u\1/g'
+}
+
 # fully qualified script path and name
 SC_SCRIPT_DIR_NAME=$(readlink -f "$0")
 echo SC_SCRIPT_DIR_NAME=$SC_SCRIPT_DIR_NAME
@@ -31,6 +36,7 @@ find . -maxdepth 1 -name "*.md" -not -name "SUMMARY.md" -not -name "chat.md" -pr
     # Create markdown link, encoding spaces in the path
     # Replace spaces with %20 in the path portion
     encoded_path="${clean_path// /%20}"
-    echo "- [$filename](./$encoded_path)" >> SUMMARY.md
+    formatted_text=$(format_link_text "$filename")
+    echo "- [$formatted_text](./$encoded_path)" >> SUMMARY.md
 done
 sed -i '1i\- [chat](chat.md)' SUMMARY.md
