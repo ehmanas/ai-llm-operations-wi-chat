@@ -39,4 +39,4 @@ find . -maxdepth 1 -name "*.md" -not -name "SUMMARY.md" -not -name "chat.md" -pr
     formatted_text=$(format_link_text "$filename")
     echo "- [$formatted_text](./$encoded_path)" >> SUMMARY.md
 done
-sed -i '1i\- [chat](chat.md)' SUMMARY.md
+sed -i '1i\- [Chat](chat.md)' SUMMARY.md
