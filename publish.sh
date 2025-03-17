@@ -321,7 +321,7 @@ then
     echo "**********************"
     echo PUBLISH_DATE = $PUBLISH_DATE
     cd $WI_REPO_DIR/ || graceful_exit "cannot cd to $WI_REPO_DIR"
-    ##pull latest changes
+    ##pull latest changes ###change-me### - need to uncomment this section and test
     #git add .
     #git commit -m 'publisher commit summary'
     #git pull --rebase
@@ -352,7 +352,7 @@ then
     mkdir -p $WI_SRC_DIR/prompt-history/
     mv $OUTPUT_FILE $WI_SRC_DIR/prompt-history/messages-$PUBLISH_DATE.md
     
-    ##push latest results
+    ##push latest results ###change-me### - need to uncomment this section and test
     #git add .
     #git commit -m 'publisher commit prompt history'
     #git pull --rebase
