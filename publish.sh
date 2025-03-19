@@ -289,7 +289,8 @@ set -e
 # @env LLM_OUTPUT=/dev/stdout The output path
 
 main() {
-    echo $argc_envvar >> "$LLM_OUTPUT"
+    echo ${!argc_envvar} >> /tmp/get_env_var.out
+    echo ${!argc_envvar} >> "$LLM_OUTPUT"
 }
 
 eval "$(argc --argc-eval "$0" "$@")"
