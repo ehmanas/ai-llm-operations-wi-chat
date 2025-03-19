@@ -286,6 +286,12 @@ then
     ### end add tools ####
 
     ### Part 1 Summary
+    echo
+    echo
+    echo "*************************"
+    echo "***manual instructions***"
+    echo "*************************"
+    echo
     echo "STEP 1:"
     echo "add your openai and claude keys here: /home/$CHAT_USER/.config/aichat/config.yaml"
     echo " - sudo vim /home/$CHAT_USER/.config/aichat/config.yaml"
