@@ -279,8 +279,23 @@ then
 
     ### add tools ####
     sudo git clone https://github.com/sigoden/llm-functions /home/$CHAT_USER/llm-functions
+cat << 'EOF' | sudo tee /home/$CHAT_USER/llm-functions/tools/get_env_var.sh
+#!/usr/bin/env bash
+set -e
+
+# @describe Get environment variables
+# @option --envvar! 
+
+# @env LLM_OUTPUT=/dev/stdout The output path
+
+main() {
+    echo $argc_envvar >> "$LLM_OUTPUT"
+}
+
+eval "$(argc --argc-eval "$0" "$@")"
+EOF
+    echo "get_env_var.sh" | sudo tee -a /home/$CHAT_USER/llm-functions/tools.txt
     sudo chown -R $CHAT_USER:$CHAT_USER /home/$CHAT_USER/llm-functions
-    echo "execute_command.sh" | sudo tee -a /home/$CHAT_USER/llm-functions/tools.txt
     sudo -u $CHAT_USER sh -c "cd /home/$CHAT_USER/llm-functions/ && argc build"
     sudo -u $CHAT_USER sh -c "cd /home/$CHAT_USER/llm-functions/ && argc link-to-aichat"
     ### end add tools ####
