@@ -294,6 +294,7 @@ main() {
 
 eval "$(argc --argc-eval "$0" "$@")"
 EOF
+    sudo chmod +x /home/$CHAT_USER/llm-functions/tools/get_env_var.sh
     echo "get_env_var.sh" | sudo tee -a /home/$CHAT_USER/llm-functions/tools.txt
     sudo chown -R $CHAT_USER:$CHAT_USER /home/$CHAT_USER/llm-functions
     sudo -u $CHAT_USER sh -c "cd /home/$CHAT_USER/llm-functions/ && argc build"
