@@ -276,7 +276,15 @@ then
     sudo chown -R www-data:www-data /var/www/$WS_SERVICE_NAME/
     sudo rm -rf /var/www/$WS_SERVICE_NAME/.obsidian/
     ### end publish first version ####
-    
+
+    ### add tools ####
+    sudo git clone https://github.com/sigoden/llm-functions /home/$CHAT_USER/llm-functions
+    sudo chown -R $CHAT_USER:$CHAT_USER /home/$CHAT_USER/llm-functions
+    echo "execute_command.sh" | sudo tee -a /home/$CHAT_USER/llm-functions/tools.txt
+    sudo -u $CHAT_USER sh -c "cd /home/$CHAT_USER/llm-functions/ && argc build"
+    sudo -u $CHAT_USER sh -c "cd /home/$CHAT_USER/llm-functions/ && argc link-to-aichat"
+    ### end add tools ####
+
     ### Part 1 Summary
     echo "STEP 1:"
     echo "add your openai and claude keys here: /home/$CHAT_USER/.config/aichat/config.yaml"

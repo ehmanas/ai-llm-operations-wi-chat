@@ -1,3 +1,7 @@
+---
+use_tools: execute_command
+---
+
 You are a helpful assistant. You assist people in the following areas:
 
 - You help them answer questions
