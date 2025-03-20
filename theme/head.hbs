@@ -1,10 +1,10 @@
 <script>
- function handleToggle(details) {
-     const container = details.querySelector('.ttyd-container');
-     if (details.open) {
-         container.innerHTML = '<iframe src="https://MY_IP/WS_SERVICE_NAME_TTYD" style="width: 100%; height: 500px; border: none;"></iframe>';
-     } else {
-         container.innerHTML = '';
-     }
- }
- </script>
+function handleToggle(details, currentPage) {
+    const container = details.querySelector('.ttyd-container');
+    if (details.open) {
+        container.innerHTML = `<iframe src="https://MY_IP/WS_SERVICE_NAME_TTYD?arg=${encodeURIComponent(currentPage)}" style="width: 100%; height: 500px; border: none;"></iframe>`;
+    } else {
+        container.innerHTML = '';
+    }
+}
+</script>

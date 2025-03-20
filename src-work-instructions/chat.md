@@ -9,7 +9,7 @@ Instructions:
 - You can ask about anything in this site.
 - The answers are shaped by the files that begin with airole-
 
-<details ontoggle="handleToggle(this)">
-     <summary>Expand this to start asking...</summary>
-     <div class="ttyd-container"></div>
- </details>
+<details ontoggle="handleToggle(this, window.location.pathname.split('/').pop())">
+    <summary>Expand this to start asking...</summary>
+    <div class="ttyd-container"></div>
+</details>

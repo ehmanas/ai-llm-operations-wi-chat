@@ -276,8 +276,39 @@ then
     sudo chown -R www-data:www-data /var/www/$WS_SERVICE_NAME/
     sudo rm -rf /var/www/$WS_SERVICE_NAME/.obsidian/
     ### end publish first version ####
-    
+
+    ### add tools ####
+    sudo git clone https://github.com/sigoden/llm-functions /home/$CHAT_USER/llm-functions
+cat << 'EOF' | sudo tee /home/$CHAT_USER/llm-functions/tools/get_env_var.sh
+#!/usr/bin/env bash
+set -e
+
+# @describe Get environment variables
+# @option --envvar! 
+
+# @env LLM_OUTPUT=/dev/stdout The output path
+
+main() {
+    echo ${!argc_envvar} >> /tmp/get_env_var.out
+    echo ${!argc_envvar} >> "$LLM_OUTPUT"
+}
+
+eval "$(argc --argc-eval "$0" "$@")"
+EOF
+    sudo chmod +x /home/$CHAT_USER/llm-functions/tools/get_env_var.sh
+    echo "get_env_var.sh" | sudo tee -a /home/$CHAT_USER/llm-functions/tools.txt
+    sudo chown -R $CHAT_USER:$CHAT_USER /home/$CHAT_USER/llm-functions
+    sudo -u $CHAT_USER sh -c "cd /home/$CHAT_USER/llm-functions/ && argc build"
+    sudo -u $CHAT_USER sh -c "cd /home/$CHAT_USER/llm-functions/ && argc link-to-aichat"
+    ### end add tools ####
+
     ### Part 1 Summary
+    echo
+    echo
+    echo "*************************"
+    echo "***manual instructions***"
+    echo "*************************"
+    echo
     echo "STEP 1:"
     echo "add your openai and claude keys here: /home/$CHAT_USER/.config/aichat/config.yaml"
     echo " - sudo vim /home/$CHAT_USER/.config/aichat/config.yaml"
@@ -321,7 +352,7 @@ then
     echo "**********************"
     echo PUBLISH_DATE = $PUBLISH_DATE
     cd $WI_REPO_DIR/ || graceful_exit "cannot cd to $WI_REPO_DIR"
-    ##pull latest changes
+    ##pull latest changes ###change-me### - need to uncomment this section and test
     #git add .
     #git commit -m 'publisher commit summary'
     #git pull --rebase
@@ -352,7 +383,7 @@ then
     mkdir -p $WI_SRC_DIR/prompt-history/
     mv $OUTPUT_FILE $WI_SRC_DIR/prompt-history/messages-$PUBLISH_DATE.md
     
-    ##push latest results
+    ##push latest results ###change-me### - need to uncomment this section and test
     #git add .
     #git commit -m 'publisher commit prompt history'
     #git pull --rebase
