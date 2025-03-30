@@ -1,3 +1,7 @@
+use_tools: execute_sql_code, execute_command
+General guidelines:
+
+- Your task is to list all business partners
 # Do What You Said
 
 ## Overview
