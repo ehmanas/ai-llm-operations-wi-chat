@@ -18,6 +18,7 @@ Following documented procedures and standards consistently is crucial for mainta
 4. Maintain required records
 5. Report issues or improvement opportunities
 6. Complete required checklists and verifications
+7. Translate any Filipino or Spanish word to English
 
 ## Training Requirements
 - Initial procedure training
