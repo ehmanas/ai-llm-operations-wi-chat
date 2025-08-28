@@ -353,16 +353,16 @@ then
     echo PUBLISH_DATE = $PUBLISH_DATE
     cd $WI_REPO_DIR/ || graceful_exit "cannot cd to $WI_REPO_DIR"
     ##pull latest changes ###change-me### - need to uncomment this section and test
-    #git add .
-    #git commit -m 'publisher commit summary'
-    #git pull --rebase
+    git add .
+    git commit -m 'publisher commit summary'
+    git pull --rebase
     util/summary.sh
     /usr/local/bin/mdbook build
     rsync -a --delete wi/ /var/www/$WS_SERVICE_NAME/
     chown -R www-data:www-data /var/www/$WS_SERVICE_NAME/
     rm -rf /var/www/$WS_SERVICE_NAME/.obsidian/
-    #systemctl restart ttyd
-    #systemctl restart nginx
+    systemctl restart ttyd
+    systemctl restart nginx
     
     # Create or clear the output file - prepare to cat all individual chat result directories
     OUTPUT_FILE=/home/$CHAT_USER/.config/aichat/messages.md
@@ -384,10 +384,10 @@ then
     mv $OUTPUT_FILE $WI_SRC_DIR/prompt-history/messages-$PUBLISH_DATE.md
     
     ##push latest results ###change-me### - need to uncomment this section and test
-    #git add .
-    #git commit -m 'publisher commit prompt history'
-    #git pull --rebase
-    #git push
+    git add .
+    git commit -m 'publisher commit prompt history'
+    git pull --rebase
+    git push
     
     # cleanup history
     rm -rf /home/$CHAT_USER/.aichat-history/*
@@ -396,5 +396,5 @@ then
     echo "***ending publish***"
     echo "**********************"
     
-    ######## END PART TWO: PUBLISH ##########
+    ######## END PART TWO: PUBLISH #####:wq!#####
 fi
