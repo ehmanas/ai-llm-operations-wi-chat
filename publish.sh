@@ -384,7 +384,15 @@ then
     echo 'here 3'
 
     # Now that the analysis is complete, rebuild the rag with updated files
+    
+    echo $WI_REPO_DIR/util/stage.sh
+    echo sudo -u $CHAT_USER /usr/local/bin/aichat --rag $AI_RAG_ALL --rebuild-rag
+
+    read 'next...'
+
     $WI_REPO_DIR/util/stage.sh
+
+
     sudo -u $CHAT_USER /usr/local/bin/aichat --rag $AI_RAG_ALL --rebuild-rag
     echo 'HERE AGAIN !!!!'
 
