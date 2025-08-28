@@ -7,6 +7,7 @@ The Baldrige Criteria for Performance Excellence provides a comprehensive framew
 - Malasakit
 - Charity
 - Palabra de honor
+- Bonjour
 - Visionary leadership
 - Customer-focused excellence
 - Valuing people
