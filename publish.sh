@@ -363,7 +363,9 @@ then
     rm -rf /var/www/$WS_SERVICE_NAME/.obsidian/
     systemctl restart ttyd
     systemctl restart nginx
-    
+
+    echo 'here!!!'
+
     # Create or clear the output file - prepare to cat all individual chat result directories
     OUTPUT_FILE=/home/$CHAT_USER/.config/aichat/messages.md
     rm -f $OUTPUT_FILE
@@ -378,7 +380,8 @@ then
     # Now that the analysis is complete, rebuild the rag with updated files
     $WI_REPO_DIR/util/stage.sh
     sudo -u $CHAT_USER /usr/local/bin/aichat --rag $AI_RAG_ALL --rebuild-rag
-    
+    echo 'HERE AGAIN !!!!'
+
     # move messages and evaluation to prompt history so that content creators can evaluate
     mkdir -p $WI_SRC_DIR/prompt-history/
     mv $OUTPUT_FILE $WI_SRC_DIR/prompt-history/messages-$PUBLISH_DATE.md
