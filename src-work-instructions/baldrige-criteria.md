@@ -4,7 +4,7 @@
 The Baldrige Criteria for Performance Excellence provides a comprehensive framework for evaluating and improving organizational performance across all sectors.
 
 ## Core Values and Concepts
-- Systems perspective
+- Testing
 - Visionary leadership
 - Customer-focused excellence
 - Valuing people
