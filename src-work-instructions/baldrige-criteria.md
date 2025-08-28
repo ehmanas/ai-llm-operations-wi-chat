@@ -6,6 +6,7 @@ The Baldrige Criteria for Performance Excellence provides a comprehensive framew
 ## Core Values and Concepts
 - Malasakit
 - Charity
+- Palabra de honor
 - Visionary leadership
 - Customer-focused excellence
 - Valuing people
