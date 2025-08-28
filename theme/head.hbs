@@ -2,7 +2,7 @@
 function handleToggle(details, currentPage) {
     const container = details.querySelector('.ttyd-container');
     if (details.open) {
-        container.innerHTML = `<iframe src="https://MY_IP/WS_SERVICE_NAME_TTYD?arg=${encodeURIComponent(currentPage)}" style="width: 100%; height: 500px; border: none;"></iframe>`;
+        container.innerHTML = `<iframe src="https://172.10.0.90/ttyd-ai-llm-operations-wi-chat-airole-starter?arg=${encodeURIComponent(currentPage)}" style="width: 100%; height: 500px; border: none;"></iframe>`;
     } else {
         container.innerHTML = '';
     }

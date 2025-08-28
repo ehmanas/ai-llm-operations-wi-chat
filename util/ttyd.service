@@ -5,10 +5,10 @@ After=network.target
 [Service]
 # ai-launcher.sh needs to know what role to use - or have different service per repo per role 
 # need to specify the port: TTYD_PORT
-ExecStart=/bin/bash -c "/usr/local/bin/ttyd -a -W WI_REPO_DIR/util/ai-launcher.sh"
+ExecStart=/bin/bash -c "/usr/local/bin/ttyd -a -W /opt/work-instruction/ehmanas/ai-llm-operations-wi-chat/util/ai-launcher.sh"
 Restart=always
-User=CHAT_USER
-Group=CHAT_USER
+User=debian
+Group=debian
 
 [Install]
 WantedBy=multi-user.target

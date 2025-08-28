@@ -55,7 +55,7 @@ echo OS_USER=$OS_USER
 OS_USER_GROUP=$(id -g -n)
 echo OS_USER_GROUP=$OS_USER_GROUP
 # chat user
-CHAT_USER="cathy" ###change-me###
+CHAT_USER="debian" ###change-me###
 echo CHAT_USER=$CHAT_USER
 SC_VARIABLES[CHAT_USER]=$CHAT_USER
 # Where to install docs
@@ -65,7 +65,7 @@ echo WI_ROOT_DIR=$WI_ROOT_DIR
 GH_URL="https://github.com"
 echo GH_URL=$GH_URL
 # git project
-GH_PROJECT="chuckstack" ###change-me###
+GH_PROJECT="ehmanas" ###change-me###
 echo GH_PROJECT=$GH_PROJECT
 SC_VARIABLES[GH_PROJECT]=$GH_PROJECT
 # git repo

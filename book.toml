@@ -11,5 +11,5 @@ build-dir = "wi"
 
 [output.html]
 #NOTE: the below assumes your primary branch is 'main' and not 'master'
-git-repository-url = "https://github.com/GH_PROJECT/GH_REPO/tree/main"
-edit-url-template = "https://github.com/GH_PROJECT/GH_REPO/edit/main/{path}"
+git-repository-url = "https://github.com/ehmanas/ai-llm-operations-wi-chat/tree/main"
+edit-url-template = "https://github.com/ehmanas/ai-llm-operations-wi-chat/edit/main/{path}"
